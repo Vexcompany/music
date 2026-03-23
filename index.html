@@ -67,7 +67,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);over
 @media(pointer:coarse){.cursor,.cursor-dot{display:none;}}
 
 /* ============================================================
-   IDUL FITRI SCREEN (screen 0 — before intro)
+   IDUL FITRI SCREEN
 ============================================================ */
 #eidScreen{
   position:fixed;inset:0;z-index:9000;
@@ -82,7 +82,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);over
 
 .eid-inner{position:relative;z-index:10;text-align:center;padding:2rem 1.5rem;max-width:640px;}
 
-/* Arabic bismillah */
 .eid-bismillah{
   font-family:'Amiri',serif;
   font-size:clamp(1.1rem,4vw,1.6rem);
@@ -92,7 +91,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);over
   animation:eidFadeUp 1.2s ease 0.3s both;
 }
 
-/* Crescent & star SVG */
 .eid-crescent{
   font-size:clamp(3rem,10vw,5rem);
   display:block;
@@ -133,7 +131,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);over
   animation:eidFadeUp 0.8s ease 2s both;
 }
 
-/* Ketupat decorations */
 .eid-ketupatRow{
   display:flex;justify-content:center;gap:1.2rem;margin-bottom:2rem;
   animation:eidFadeUp 0.8s ease 2.1s both;
@@ -188,7 +185,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);over
 
 @keyframes eidFadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 
-/* Eid sparkle stars */
 .eid-spark{
   position:absolute;width:3px;height:3px;
   background:#f5c842;border-radius:50%;
@@ -203,7 +199,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);over
   100%{transform:translate(var(--stx2,90px),var(--sty2,-30px));opacity:0;}
 }
 
-/* Lantern swing */
 .eid-lantern{
   position:absolute;font-size:3rem;
   animation:lanternSwing var(--ld,5s) ease-in-out infinite var(--ldl,0s);
@@ -214,7 +209,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);over
 @keyframes lanternSwing{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(12deg)}}
 
 /* ============================================================
-   TRANSITION OVERLAY between eid and intro
+   TRANSITION OVERLAY
 ============================================================ */
 #transOverlay{
   position:fixed;inset:0;z-index:8900;
@@ -326,9 +321,15 @@ nav{
 .theme-btn:hover{background:var(--leaf);color:#fff;border-color:var(--leaf);}
 .t-label{display:none;}
 @media(min-width:520px){.t-label{display:inline;}}
-.music-btn{background:var(--surface2);border:1px solid var(--border);border-radius:100px;padding:0.36rem 0.75rem;cursor:pointer;font-size:0.88rem;transition:var(--tr);display:flex;align-items:center;gap:0.3rem;color:var(--text);font-weight:700;font-size:0.75rem;white-space:nowrap;}
-.music-btn:hover{background:var(--leaf);color:#fff;border-color:var(--leaf);}
-.music-note{font-size:0.95rem;}
+/* Nav music toggle — hanya icon kecil */
+.music-nav-btn{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:100px;width:34px;height:34px;
+  cursor:pointer;font-size:1rem;
+  display:flex;align-items:center;justify-content:center;
+  transition:var(--tr);color:var(--text);
+}
+.music-nav-btn:hover{background:var(--leaf);color:#fff;border-color:var(--leaf);}
 .hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:4px;background:none;border:none;}
 .hamburger span{display:block;width:21px;height:2px;background:var(--leaf);border-radius:2px;transition:var(--tr);}
 .mobile-menu{display:none;position:fixed;top:56px;left:0;right:0;background:var(--nav-bg);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);padding:0.85rem 1.5rem;z-index:999;flex-direction:column;gap:0.35rem;}
@@ -338,71 +339,126 @@ nav{
 @media(max-width:680px){.nav-links{display:none;}.hamburger{display:flex;}}
 
 /* ============================================================
-   MUSIC PLAYER
+   MUSIC PLAYER — Local Audio, desain bersih
 ============================================================ */
 #musicPlayer{
   position:fixed;bottom:0;left:0;right:0;z-index:2000;
   background:var(--player-bg);backdrop-filter:blur(20px);
-  border-top:1px solid var(--border);padding:0.7rem 1.2rem;
+  border-top:1px solid var(--border);
+  padding:0.65rem 1.4rem;
   transform:translateY(100%);
   transition:transform 0.5s cubic-bezier(.22,1,.36,1),background 0.5s,border-color 0.5s;
   display:flex;align-items:center;gap:1rem;
 }
 #musicPlayer.open{transform:translateY(0);}
-#ytFrame{display:none;}
-.player-art{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,var(--leaf),var(--pale));display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;animation:rotateArt 8s linear infinite paused;}
+
+/* Artwork rotating disc */
+.player-art{
+  width:40px;height:40px;border-radius:50%;
+  background:linear-gradient(135deg,var(--leaf),var(--pale));
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;flex-shrink:0;
+  border:2px solid var(--border);
+  animation:rotateArt 8s linear infinite paused;
+  position:relative;
+}
+.player-art::after{content:'';position:absolute;inset:9px;border-radius:50%;background:var(--bg2);border:1px solid var(--border);}
+.player-art-emoji{position:relative;z-index:1;font-size:0.75rem;}
 .player-art.playing{animation-play-state:running;}
 @keyframes rotateArt{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+/* Info */
 .player-info{flex:1;min-width:0;}
 .player-title{font-weight:700;font-size:0.82rem;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.player-artist{font-size:0.72rem;color:var(--text2);margin-top:0.1rem;}
-.player-progress-wrap{display:flex;align-items:center;gap:0.5rem;flex:1.5;min-width:0;}
-.player-time{font-size:0.68rem;color:var(--text2);flex-shrink:0;font-weight:600;}
-.player-bar{flex:1;height:4px;background:var(--border);border-radius:2px;cursor:pointer;position:relative;}
-.player-bar-fill{height:100%;background:var(--leaf);border-radius:2px;width:0%;transition:width 0.3s linear;pointer-events:none;}
+.player-artist{font-size:0.7rem;color:var(--text2);margin-top:0.1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* Progress bar */
+.player-progress-wrap{display:flex;align-items:center;gap:0.55rem;flex:1.5;min-width:0;}
+.player-time{font-size:0.65rem;color:var(--text2);flex-shrink:0;font-weight:600;font-variant-numeric:tabular-nums;min-width:32px;}
+.player-bar{
+  flex:1;height:3px;background:var(--border);border-radius:2px;
+  cursor:pointer;position:relative;overflow:hidden;
+}
+.player-bar-fill{
+  height:100%;
+  background:linear-gradient(to right,var(--leaf),var(--pale));
+  border-radius:2px;width:0%;transition:width 0.3s linear;
+}
+.player-bar:hover{height:5px;}
 @media(max-width:560px){.player-progress-wrap{display:none;}}
-.player-controls{display:flex;align-items:center;gap:0.3rem;flex-shrink:0;}
-.p-btn{background:none;border:none;cursor:pointer;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;color:var(--text2);transition:var(--tr);}
+
+/* Controls — ikon minimal */
+.player-controls{display:flex;align-items:center;gap:0.2rem;flex-shrink:0;}
+.p-btn{
+  background:none;border:none;cursor:pointer;
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.85rem;color:var(--text2);
+  transition:var(--tr);
+}
 .p-btn:hover{background:var(--surface2);color:var(--leaf);}
 .p-btn.active{color:var(--leaf);}
-.p-btn.play-btn{width:40px;height:40px;background:var(--leaf);color:#fff;font-size:1.1rem;}
+.p-btn.play-btn{
+  width:38px;height:38px;
+  background:var(--leaf);color:#fff;
+  font-size:0.95rem;border-radius:50%;
+  box-shadow:0 2px 12px rgba(82,183,136,0.35);
+}
 .p-btn.play-btn:hover{background:var(--pale);color:#1a3a2a;}
-.p-btn.sm{width:28px;height:28px;font-size:0.82rem;}
-.player-playlist-btn{background:var(--surface2);border:1px solid var(--border);border-radius:100px;padding:0.25rem 0.7rem;cursor:pointer;font-size:0.7rem;font-weight:700;color:var(--text2);transition:var(--tr);flex-shrink:0;}
-.player-playlist-btn:hover{background:var(--leaf);color:#fff;border-color:var(--leaf);}
-#playlistPanel{position:fixed;bottom:65px;left:0;right:0;z-index:1999;background:var(--player-bg);backdrop-filter:blur(20px);border-top:1px solid var(--border);max-height:55vh;overflow-y:auto;transform:translateY(100%);transition:transform 0.45s cubic-bezier(.22,1,.36,1);}
+
+/* Playlist toggle — subtle pill */
+.pl-toggle-btn{
+  background:none;border:1px solid var(--border);
+  border-radius:100px;padding:0.25rem 0.65rem;
+  cursor:pointer;font-size:0.65rem;font-weight:700;
+  color:var(--text3);transition:var(--tr);flex-shrink:0;
+  letter-spacing:1px;text-transform:uppercase;
+}
+.pl-toggle-btn:hover{background:var(--leaf);color:#fff;border-color:var(--leaf);}
+
+/* ============================================================
+   PLAYLIST PANEL
+============================================================ */
+#playlistPanel{
+  position:fixed;bottom:65px;left:0;right:0;z-index:1999;
+  background:var(--player-bg);backdrop-filter:blur(20px);
+  border-top:1px solid var(--border);
+  max-height:55vh;overflow-y:auto;
+  transform:translateY(100%);
+  transition:transform 0.45s cubic-bezier(.22,1,.36,1);
+}
 #playlistPanel.open{transform:translateY(0);}
-.pl-header{padding:0.85rem 1.2rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
-.pl-header span{font-weight:700;font-size:0.85rem;color:var(--text);}
-.pl-close{background:none;border:none;cursor:pointer;font-size:1.1rem;color:var(--text2);padding:0.2rem;}
-.pl-item{padding:0.75rem 1.2rem;display:flex;align-items:center;gap:0.8rem;cursor:pointer;transition:background 0.25s;border-bottom:1px solid var(--border);}
+
+.pl-header{
+  padding:0.8rem 1.4rem;border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+  position:sticky;top:0;background:var(--player-bg);backdrop-filter:blur(20px);z-index:1;
+}
+.pl-header-title{font-weight:700;font-size:0.8rem;color:var(--text);letter-spacing:1px;}
+.pl-close{background:none;border:none;cursor:pointer;font-size:0.9rem;color:var(--text2);padding:0.2rem;opacity:0.7;transition:opacity 0.2s;}
+.pl-close:hover{opacity:1;}
+
+.pl-item{
+  padding:0.7rem 1.4rem;
+  display:flex;align-items:center;gap:0.85rem;
+  cursor:pointer;transition:background 0.2s;
+  border-bottom:1px solid rgba(149,213,178,0.06);
+}
 .pl-item:hover{background:var(--surface);}
-.pl-item.playing{background:rgba(82,183,136,0.12);}
-.pl-num{width:20px;font-size:0.72rem;color:var(--text2);text-align:center;flex-shrink:0;}
+.pl-item.playing{background:rgba(82,183,136,0.1);}
+
+.pl-num{width:18px;font-size:0.68rem;color:var(--text3);text-align:center;flex-shrink:0;font-weight:600;}
+.pl-item.playing .pl-num-n{display:none;}
 .pl-item.playing .pl-num::after{content:'♪';color:var(--leaf);animation:noteB 0.6s ease-in-out infinite alternate;}
 @keyframes noteB{from{transform:translateY(0)}to{transform:translateY(-3px)}}
-.pl-item.playing .pl-num-n{display:none;}
-.pl-info{flex:1;min-width:0;}
-.pl-name{font-size:0.84rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.pl-artist{font-size:0.72rem;color:var(--text2);margin-top:0.1rem;}
-.pl-dur{font-size:0.72rem;color:var(--text2);flex-shrink:0;}
-#playlistPanel::-webkit-scrollbar{width:5px;}
-#playlistPanel::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
 
-/* Music transition badge */
-#musicSwitchNotif{
-  position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-20px);
-  z-index:3000;
-  background:rgba(6,15,9,0.92);backdrop-filter:blur(16px);
-  border:1px solid rgba(82,183,136,0.4);
-  border-radius:100px;padding:0.6rem 1.5rem;
-  font-size:0.78rem;font-weight:700;color:var(--pale);
-  letter-spacing:1px;
-  opacity:0;pointer-events:none;
-  transition:opacity 0.4s ease,transform 0.4s ease;
-  white-space:nowrap;
-}
-#musicSwitchNotif.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.pl-info{flex:1;min-width:0;}
+.pl-name{font-size:0.82rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pl-artist{font-size:0.68rem;color:var(--text2);margin-top:0.08rem;}
+.pl-dur{font-size:0.68rem;color:var(--text3);flex-shrink:0;font-variant-numeric:tabular-nums;}
+
+#playlistPanel::-webkit-scrollbar{width:4px;}
+#playlistPanel::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
 
 /* ============================================================
    SECTIONS
@@ -612,23 +668,8 @@ footer small{display:block;margin-top:0.45rem;color:var(--text3);font-size:0.73r
 .obs.visible{opacity:1;transform:translateY(0);}
 
 /* ============================================================
-   MUSIC PHASE INDICATOR in player
+   MOBILE RESPONSIVE
 ============================================================ */
-.music-phase-tag{
-  font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;
-  padding:0.18rem 0.55rem;border-radius:100px;
-  margin-left:0.4rem;
-  display:inline-block;
-  transition:all 0.4s ease;
-}
-.music-phase-tag.eid{background:rgba(212,160,23,0.2);color:var(--gold2);border:1px solid rgba(212,160,23,0.35);}
-.music-phase-tag.nature{background:rgba(82,183,136,0.15);color:var(--leaf);border:1px solid rgba(82,183,136,0.3);}
-
-/* ============================================================
-   MOBILE RESPONSIVE — comprehensive overrides
-============================================================ */
-
-/* ---- EID SCREEN mobile ---- */
 @media(max-width:480px){
   .eid-inner{padding:1rem 1.2rem;max-width:100%;}
   .eid-bismillah{font-size:1rem;margin-bottom:0.7rem;}
@@ -640,205 +681,107 @@ footer small{display:block;margin-top:0.45rem;color:var(--text3);font-size:0.73r
   .ketupat{font-size:1.1rem;}
   .eid-msg{font-size:0.8rem;margin-bottom:1.8rem;line-height:1.6;}
   .eid-btn{padding:0.85rem 2.2rem;font-size:0.75rem;letter-spacing:2px;}
-  .eid-lantern{display:none;} /* hide lanterns on small screens */
-}
+  .eid-lantern{display:none;}
 
-/* ---- INTRO SCREEN mobile ---- */
-@media(max-width:480px){
   .intro-pre{font-size:0.65rem;letter-spacing:4px;}
   .intro-name{font-size:clamp(2.8rem,18vw,5rem);letter-spacing:-1px;}
   .intro-sub{font-size:0.88rem;}
   .intro-enter{padding:0.75rem 2rem;font-size:0.75rem;letter-spacing:2px;margin-top:2rem;}
-}
 
-/* ---- NAV mobile ---- */
-@media(max-width:480px){
   nav{padding:0.65rem 1rem;}
   .nav-logo{font-size:0.95rem;}
-  .music-btn .t-label,.theme-btn .t-label{display:none!important;}
-  .music-btn,.theme-btn{padding:0.3rem 0.55rem;}
-}
+  .t-label{display:none!important;}
+  .theme-btn{padding:0.3rem 0.55rem;}
 
-/* ---- MUSIC PLAYER mobile ---- */
-@media(max-width:480px){
-  #musicPlayer{
-    padding:0.55rem 0.85rem;
-    gap:0.6rem;
-    flex-wrap:nowrap;
-  }
-  .player-art{width:36px;height:36px;font-size:1rem;}
-  .player-info{min-width:0;flex:1;}
+  #musicPlayer{padding:0.55rem 0.9rem;gap:0.6rem;}
+  .player-art{width:34px;height:34px;}
   .player-title{font-size:0.72rem;}
   .player-artist{font-size:0.63rem;}
-  .music-phase-tag{display:none;} /* hide tag on tiny screens */
-  .player-controls{gap:0.1rem;}
-  .p-btn{width:28px;height:28px;font-size:0.85rem;}
-  .p-btn.play-btn{width:34px;height:34px;font-size:0.95rem;}
-  .p-btn.sm{width:24px;height:24px;font-size:0.7rem;}
-  .player-playlist-btn{padding:0.2rem 0.5rem;font-size:0.62rem;}
-  /* Hide shuffle/repeat on very small screens */
+  .p-btn{width:28px;height:28px;font-size:0.8rem;}
+  .p-btn.play-btn{width:34px;height:34px;font-size:0.88rem;}
   #btnShuffle,#btnRepeat{display:none;}
-}
+  .pl-toggle-btn{padding:0.2rem 0.5rem;font-size:0.6rem;}
 
-/* ---- PLAYLIST PANEL mobile ---- */
-@media(max-width:480px){
-  #playlistPanel{bottom:60px;max-height:50vh;}
+  #playlistPanel{bottom:58px;max-height:50vh;}
   .pl-item{padding:0.6rem 1rem;}
-  .pl-name{font-size:0.78rem;}
-  .pl-artist{font-size:0.66rem;}
-  .pl-dur{font-size:0.64rem;}
-}
 
-/* ---- HERO PAGE mobile ---- */
-@media(max-width:480px){
   .hero-content{padding:70px 1.2rem 2rem;}
   .hero-badge{font-size:0.62rem;letter-spacing:2px;padding:0.3rem 0.8rem;}
   .hero-title{font-size:clamp(2rem,9vw,3rem);margin-bottom:1rem;}
   .hero-desc{font-size:0.85rem;line-height:1.7;}
   .scroll-hint{margin-top:1.5rem;font-size:0.62rem;}
-  .scroll-line{height:32px;}
-}
 
-/* ---- PAGE 2 NATURE mobile ---- */
-@media(max-width:480px){
   #page2{padding:4.5rem 1rem 3rem;}
   .nature-banner{height:clamp(140px,45vw,200px);border-radius:14px;margin-bottom:1.4rem;}
   .nature-banner-text{font-size:0.88rem;max-width:220px;padding:1rem 1.2rem;}
   .nature-grid{gap:0.75rem;margin-bottom:1.4rem;}
-  .nature-card{border-radius:14px;}
   .nature-card-img{height:100px;}
   .nature-card-body{padding:0.75rem 0.9rem 0.9rem;}
   .card-title{font-size:0.88rem;}
-  .card-text{font-size:0.77rem;line-height:1.55;}
-  .nature-quote{padding:1.3rem 1.4rem;border-radius:14px;}
-  .nature-quote p{font-size:0.9rem;}
-  .nature-quote::before{font-size:4rem;top:-10px;left:8px;}
-}
+  .card-text{font-size:0.77rem;}
 
-/* ---- PAGE 3 ANIMALS mobile ---- */
-@media(max-width:480px){
   #page3{padding:4.5rem 1rem 3rem;}
-  .animals-container{gap:1rem;}
+  .animals-container{display:flex;flex-direction:column;gap:1rem;}
   .animal-img-wrap{height:clamp(140px,45vw,200px);}
   .ain{font-size:1.1rem;}
   .animal-body{padding:0.9rem 1.1rem 1.1rem;}
-  .animal-desc{font-size:0.8rem;line-height:1.6;}
-  .animal-fact{font-size:0.74rem;padding:0.5rem 0.7rem;}
-  .aef{font-size:1.7rem;}
-}
+  .animal-desc{font-size:0.8rem;}
 
-/* ---- PAGE 4 GAME mobile ---- */
-@media(max-width:480px){
   #page4{padding:4.5rem 0.9rem 2.5rem;}
-  .game-tabs{gap:0.3rem;}
   .game-tab{padding:0.42rem 0.9rem;font-size:0.72rem;}
   .quiz-area{padding:1.3rem 1.1rem;border-radius:16px;}
   .quiz-emoji{font-size:2.5rem;}
   .quiz-question{font-size:0.95rem;}
   .quiz-btn{font-size:0.78rem;padding:0.65rem 0.8rem;}
-  .quiz-feedback{font-size:0.78rem;}
-  .quiz-score-num{font-size:2.8rem;}
-  .quiz-score-msg{font-size:0.9rem;}
   .catch-area{padding:0.9rem;border-radius:16px;}
   .memory-area{padding:1.2rem 1rem;border-radius:16px;}
-  .memory-grid{grid-template-columns:repeat(4,1fr);gap:0.4rem;}
-  .mem-card-front{font-size:0.9rem;}
-}
+  .memory-grid{gap:0.4rem;}
 
-/* ---- FOOTER mobile ---- */
-@media(max-width:480px){
   footer{padding:2rem 1rem;padding-bottom:calc(2rem + 60px);}
   footer p{font-size:0.9rem;}
-  footer small{font-size:0.68rem;}
-}
 
-/* ---- SEC titles mobile ---- */
-@media(max-width:480px){
   .sec-label{font-size:0.62rem;letter-spacing:3px;}
   .sec-title{font-size:clamp(1.5rem,6vw,2.2rem);margin-bottom:1.4rem;}
 }
 
-/* ---- Music switch notif mobile ---- */
-@media(max-width:480px){
-  #musicSwitchNotif{
-    font-size:0.7rem;
-    padding:0.5rem 1.1rem;
-    top:68px;
-    max-width:90vw;
-    text-align:center;
-    white-space:normal;
-  }
-}
-
-/* Prevent horizontal scroll everywhere */
-html,body{max-width:100%;overflow-x:hidden;}
-
-/* Better touch targets */
-button{-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
-a{-webkit-tap-highlight-color:transparent;}
-
-/* Smooth scroll on iOS */
-html{-webkit-overflow-scrolling:touch;}
-
-/* iOS safe area support */
-#musicPlayer{
-  padding-bottom:calc(0.7rem + env(safe-area-inset-bottom));
-}
-nav{
-  padding-top:calc(0.82rem + env(safe-area-inset-top));
-}
-footer{
-  padding-bottom:calc(3rem + 65px + env(safe-area-inset-bottom));
-}
-@media(max-width:480px){
-  footer{
-    padding-bottom:calc(2rem + 60px + env(safe-area-inset-bottom));
-  }
-}
-
-/* Ensure memory grid works on tiny screens */
 @media(max-width:360px){
   .memory-grid{grid-template-columns:repeat(4,1fr);gap:0.3rem;}
   .quiz-options{grid-template-columns:1fr;}
 }
 
-/* Animals horizontal scroll on mobile if needed */
+html,body{max-width:100%;overflow-x:hidden;}
+button{-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+a{-webkit-tap-highlight-color:transparent;}
+html{-webkit-overflow-scrolling:touch;}
+
+#musicPlayer{padding-bottom:calc(0.65rem + env(safe-area-inset-bottom));}
+nav{padding-top:calc(0.82rem + env(safe-area-inset-top));}
+footer{padding-bottom:calc(3rem + 65px + env(safe-area-inset-bottom));}
 @media(max-width:480px){
-  .animals-container{
-    display:flex;
-    flex-direction:column;
-    gap:1rem;
-  }
-}</style>
+  footer{padding-bottom:calc(2rem + 60px + env(safe-area-inset-bottom));}
+}
+</style>
 </head>
 <body>
 
 <div class="cursor" id="cursor"></div>
 <div class="cursor-dot" id="cursorDot"></div>
 
-<!-- Music switch notification -->
-<div id="musicSwitchNotif">🎵 Beralih ke playlist alam...</div>
-
 <!-- ===============================================================
      EID FITRI SCREEN
 =============================================================== -->
 <div id="eidScreen">
   <canvas id="eidCanvas"></canvas>
-
-  <!-- Lanterns -->
   <div class="eid-lantern" style="left:4%;top:8%;--ld:4s;--ldl:0s;">🪔</div>
   <div class="eid-lantern" style="right:5%;top:10%;--ld:5s;--ldl:1s;">🏮</div>
   <div class="eid-lantern" style="left:8%;top:55%;--ld:6s;--ldl:0.5s;font-size:2rem;">🪔</div>
   <div class="eid-lantern" style="right:9%;top:60%;--ld:4.5s;--ldl:1.5s;font-size:2rem;">🏮</div>
-
   <div class="eid-inner">
     <div class="eid-bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
     <div class="eid-crescent">☪️</div>
-
     <div class="eid-main-text">Minal Aidzin<br>Wal Faizin</div>
     <div class="eid-sub-text">Mohon Maaf Lahir dan Batin</div>
     <div class="eid-year">Idul Fitri 1447 H · 2026 M</div>
-
     <div class="eid-ketupatRow">
       <span class="ketupat">🫙</span>
       <span class="ketupat">✨</span>
@@ -846,21 +789,17 @@ footer{
       <span class="ketupat">✨</span>
       <span class="ketupat">🫙</span>
     </div>
-
     <div class="eid-divider"></div>
-
     <div class="eid-msg">
       Selamat Hari Raya Idul Fitri, <strong style="color:#f5c842">Richyy</strong> 🌙<br>
       Semoga di hari yang fitri ini, segala dosa terampuni<br>dan hati kembali bersih seperti kertas putih. 💛
     </div>
-
     <button class="eid-btn" onclick="enterFromEid()">
       <span>✦ Masuk ke Hutan ✦</span>
     </button>
   </div>
 </div>
 
-<!-- Transition overlay -->
 <div id="transOverlay"></div>
 
 <!-- ===============================================================
@@ -869,7 +808,6 @@ footer{
 <div id="intro">
   <canvas id="introCanvas"></canvas>
   <div id="introFF"></div>
-
   <div class="intro-inner">
     <div class="intro-pre">🌿 sebuah ruang kecil yang dibuat sesuai dengan apa yang kamu sukaa</div>
     <div class="intro-name">Richyyyy</div>
@@ -892,10 +830,7 @@ footer{
       <li><a href="#page3">Hewan</a></li>
       <li><a href="#page4">Game</a></li>
     </ul>
-    <button class="music-btn" onclick="togglePlayer()" title="Musik">
-      <span class="music-note" id="musicNote">🎵</span>
-      <span class="t-label">Musik</span>
-    </button>
+    <button class="music-nav-btn" onclick="togglePlayer()" title="Musik" id="musicNavBtn">🎵</button>
     <button class="theme-btn" onclick="toggleTheme()">
       <span id="tIcon">☀️</span>
       <span class="t-label" id="tLabel">Mode Siang</span>
@@ -913,40 +848,44 @@ footer{
 </div>
 
 <!-- ===============================================================
-     MUSIC PLAYER
+     MUSIC PLAYER — Local Audio
 =============================================================== -->
 <div id="musicPlayer">
-  <iframe id="ytFrame" width="1" height="1" frameborder="0" allow="autoplay" style="position:absolute;opacity:0;pointer-events:none;"></iframe>
+  <!-- Hidden HTML5 audio element -->
+  <audio id="audioEl" preload="metadata"></audio>
 
-  <div class="player-art" id="playerArt">🎵</div>
+  <div class="player-art" id="playerArt">
+    <span class="player-art-emoji" id="playerArtEmoji">🎵</span>
+  </div>
+
   <div class="player-info">
-    <div class="player-title" id="playerTitle">Pilih lagu... <span class="music-phase-tag eid" id="phaseTag">Idul Fitri</span></div>
-    <div class="player-artist" id="playerArtist">Playlist Lebaran</div>
+    <div class="player-title" id="playerTitle">Pilih lagu...</div>
+    <div class="player-artist" id="playerArtist">🌿 Playlist Alam</div>
   </div>
 
   <div class="player-progress-wrap">
     <span class="player-time" id="playerCurr">0:00</span>
-    <div class="player-bar" id="playerBar" role="progressbar">
+    <div class="player-bar" id="playerBar" role="progressbar" aria-label="Progress lagu">
       <div class="player-bar-fill" id="playerFill"></div>
     </div>
     <span class="player-time" id="playerDur">–:––</span>
   </div>
 
   <div class="player-controls">
-    <button class="p-btn sm" id="btnShuffle" onclick="toggleShuffle()" title="Shuffle" aria-label="Shuffle">🔀</button>
+    <button class="p-btn" id="btnShuffle" onclick="toggleShuffle()" title="Shuffle" aria-label="Shuffle">⇄</button>
     <button class="p-btn" onclick="prevTrack()" title="Sebelumnya" aria-label="Sebelumnya">⏮</button>
     <button class="p-btn play-btn" id="btnPlay" onclick="togglePlay()" title="Play/Pause" aria-label="Play Pause">▶</button>
     <button class="p-btn" onclick="nextTrack()" title="Berikutnya" aria-label="Berikutnya">⏭</button>
-    <button class="p-btn sm" id="btnRepeat" onclick="toggleRepeat()" title="Repeat" aria-label="Repeat">🔁</button>
+    <button class="p-btn" id="btnRepeat" onclick="toggleRepeat()" title="Repeat" aria-label="Repeat">↻</button>
   </div>
 
-  <button class="player-playlist-btn" onclick="togglePlaylist()">📋</button>
+  <button class="pl-toggle-btn" onclick="togglePlaylist()" aria-label="Playlist">List</button>
 </div>
 
 <div id="playlistPanel">
   <div class="pl-header">
-    <span id="playlistTitle">🌙 Playlist Idul Fitri</span>
-    <button class="pl-close" onclick="togglePlaylist()">✕</button>
+    <span class="pl-header-title">🌿 Playlist Alam</span>
+    <button class="pl-close" onclick="togglePlaylist()" aria-label="Tutup playlist">✕</button>
   </div>
   <div id="playlistItems"></div>
 </div>
@@ -1007,9 +946,7 @@ footer{
   </div>
 </section>
 
-<!-- ===============================================================
-     PAGE 2 — ALAM
-=============================================================== -->
+<!-- PAGE 2, 3, 4 sama persis — tidak ada perubahan konten -->
 <section id="page2">
   <div class="p2-inner">
     <span class="sec-label obs">🌍 Tentang Alam</span>
@@ -1032,9 +969,6 @@ footer{
   </div>
 </section>
 
-<!-- ===============================================================
-     PAGE 3 — ANIMALS
-=============================================================== -->
 <section id="page3">
   <div class="p3-inner">
     <span class="sec-label obs">🐾 Hewan Kesukaan Richy</span>
@@ -1056,9 +990,6 @@ footer{
   </div>
 </section>
 
-<!-- ===============================================================
-     PAGE 4 — GAME
-=============================================================== -->
 <section id="page4">
   <div class="game-header obs">
     <span class="sec-label" style="display:block">🎮 Mini Games</span>
@@ -1113,614 +1044,315 @@ footer{
 
 <script>
 /* ============================================================
-   EID CANVAS — starry night + gold particles + moon glow
+   EID CANVAS
 ============================================================ */
 (function(){
   const canvas = document.getElementById('eidCanvas');
   const ctx = canvas.getContext('2d');
-  let W, H, stars = [], goldDust = [], crescentGlow = 0;
-
+  let W, H, stars = [], goldDust = [];
   function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
   resize(); window.addEventListener('resize', resize);
-
-  // Stars
-  for(let i = 0; i < 200; i++){
-    stars.push({
-      x: Math.random() * 10000, y: Math.random() * 10000,
-      r: Math.random() * 1.8 + 0.3,
-      a: Math.random(), da: (Math.random() - 0.5) * 0.012,
-      color: Math.random() > 0.85 ? '#ffeaa0' : '#ffffff'
-    });
-  }
-
-  // Gold dust particles
-  for(let i = 0; i < 60; i++){
-    goldDust.push({
-      x: Math.random() * 10000, y: Math.random() * 10000,
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: -(Math.random() * 0.5 + 0.1),
-      r: Math.random() * 2.5 + 0.5,
-      a: Math.random() * 0.8 + 0.2,
-      color: Math.random() > 0.5 ? '#d4a017' : '#f5c842'
-    });
-  }
-
-  let t = 0;
+  for(let i = 0; i < 200; i++) stars.push({x:Math.random()*10000,y:Math.random()*10000,r:Math.random()*1.8+0.3,a:Math.random(),da:(Math.random()-0.5)*0.012,color:Math.random()>0.85?'#ffeaa0':'#ffffff'});
+  for(let i = 0; i < 60; i++) goldDust.push({x:Math.random()*10000,y:Math.random()*10000,vx:(Math.random()-0.5)*0.4,vy:-(Math.random()*0.5+0.1),r:Math.random()*2.5+0.5,a:Math.random()*0.8+0.2,color:Math.random()>0.5?'#d4a017':'#f5c842'});
+  let t=0;
   function draw(){
     ctx.clearRect(0,0,W,H);
-
-    // Deep purple-dark background
-    const grad = ctx.createRadialGradient(W/2, H*0.35, 0, W/2, H*0.35, W*0.85);
-    grad.addColorStop(0, '#1a000f');
-    grad.addColorStop(0.5, '#0d0820');
-    grad.addColorStop(1, '#050b1a');
-    ctx.fillStyle = grad; ctx.fillRect(0,0,W,H);
-
-    // Silhouette mosque/buildings at bottom
-    ctx.fillStyle = 'rgba(5,3,12,0.85)';
-    ctx.beginPath(); ctx.moveTo(0, H);
-    // Ground
-    ctx.lineTo(0, H * 0.78);
-    ctx.lineTo(W * 0.06, H * 0.78);
-    // Building 1
-    ctx.lineTo(W * 0.06, H * 0.68);
-    ctx.lineTo(W * 0.08, H * 0.62);
-    ctx.lineTo(W * 0.1, H * 0.68);
-    ctx.lineTo(W * 0.14, H * 0.68);
-    ctx.lineTo(W * 0.14, H * 0.72);
-    // Mosque dome
-    ctx.lineTo(W * 0.22, H * 0.72);
-    ctx.lineTo(W * 0.22, H * 0.6);
-    ctx.bezierCurveTo(W*0.22, H*0.48, W*0.28, H*0.44, W*0.3, H*0.44);
-    ctx.bezierCurveTo(W*0.32, H*0.44, W*0.38, H*0.48, W*0.38, H*0.6);
-    ctx.lineTo(W * 0.38, H * 0.72);
-    // Minaret left
-    ctx.lineTo(W * 0.4, H * 0.72);
-    ctx.lineTo(W * 0.4, H * 0.48);
-    ctx.lineTo(W * 0.41, H * 0.44);
-    ctx.lineTo(W * 0.415, H * 0.42);
-    ctx.lineTo(W * 0.42, H * 0.44);
-    ctx.lineTo(W * 0.43, H * 0.48);
-    ctx.lineTo(W * 0.43, H * 0.72);
-    // Houses
-    ctx.lineTo(W * 0.55, H * 0.72);
-    ctx.lineTo(W * 0.55, H * 0.65);
-    ctx.lineTo(W * 0.6, H * 0.6);
-    ctx.lineTo(W * 0.65, H * 0.65);
-    ctx.lineTo(W * 0.65, H * 0.72);
-    // Minaret right
-    ctx.lineTo(W * 0.7, H * 0.72);
-    ctx.lineTo(W * 0.7, H * 0.5);
-    ctx.lineTo(W * 0.71, H * 0.46);
-    ctx.lineTo(W * 0.715, H * 0.44);
-    ctx.lineTo(W * 0.72, H * 0.46);
-    ctx.lineTo(W * 0.73, H * 0.5);
-    ctx.lineTo(W * 0.73, H * 0.72);
-    // Building 2
-    ctx.lineTo(W * 0.8, H * 0.72);
-    ctx.lineTo(W * 0.8, H * 0.62);
-    ctx.lineTo(W * 0.9, H * 0.62);
-    ctx.lineTo(W * 0.9, H * 0.72);
-    ctx.lineTo(W, H * 0.78);
-    ctx.lineTo(W, H);
-    ctx.closePath(); ctx.fill();
-
-    // Ground glow
-    const groundGlow = ctx.createLinearGradient(0, H*0.75, 0, H);
-    groundGlow.addColorStop(0, 'rgba(212,160,23,0.08)');
-    groundGlow.addColorStop(1, 'rgba(212,160,23,0.02)');
-    ctx.fillStyle = groundGlow;
-    ctx.fillRect(0, H*0.75, W, H*0.25);
-
-    // Stars
-    stars.forEach(s => {
-      s.a += s.da;
-      if(s.a > 1 || s.a < 0) s.da *= -1;
-      ctx.globalAlpha = Math.max(0, s.a);
-      ctx.fillStyle = s.color;
-      ctx.beginPath();
-      ctx.arc(s.x % W, s.y % H, s.r, 0, Math.PI*2);
-      ctx.fill();
-    });
-
-    // Gold dust
-    goldDust.forEach(g => {
-      g.x = (g.x + g.vx + W*100) % W;
-      g.y = (g.y + g.vy + H*100) % H;
-      ctx.globalAlpha = g.a * (0.5 + 0.5 * Math.sin(t * 0.03 + g.x));
-      const grd = ctx.createRadialGradient(g.x, g.y, 0, g.x, g.y, g.r*2);
-      grd.addColorStop(0, g.color);
-      grd.addColorStop(1, 'transparent');
-      ctx.fillStyle = grd;
-      ctx.beginPath(); ctx.arc(g.x, g.y, g.r*2, 0, Math.PI*2); ctx.fill();
-    });
-
-    ctx.globalAlpha = 1;
-    t++;
-    requestAnimationFrame(draw);
+    const grad=ctx.createRadialGradient(W/2,H*0.35,0,W/2,H*0.35,W*0.85);
+    grad.addColorStop(0,'#1a000f');grad.addColorStop(0.5,'#0d0820');grad.addColorStop(1,'#050b1a');
+    ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='rgba(5,3,12,0.85)';
+    ctx.beginPath();ctx.moveTo(0,H);
+    ctx.lineTo(0,H*0.78);ctx.lineTo(W*0.06,H*0.78);ctx.lineTo(W*0.06,H*0.68);ctx.lineTo(W*0.08,H*0.62);ctx.lineTo(W*0.1,H*0.68);ctx.lineTo(W*0.14,H*0.68);ctx.lineTo(W*0.14,H*0.72);
+    ctx.lineTo(W*0.22,H*0.72);ctx.lineTo(W*0.22,H*0.6);ctx.bezierCurveTo(W*0.22,H*0.48,W*0.28,H*0.44,W*0.3,H*0.44);ctx.bezierCurveTo(W*0.32,H*0.44,W*0.38,H*0.48,W*0.38,H*0.6);ctx.lineTo(W*0.38,H*0.72);
+    ctx.lineTo(W*0.4,H*0.72);ctx.lineTo(W*0.4,H*0.48);ctx.lineTo(W*0.41,H*0.44);ctx.lineTo(W*0.415,H*0.42);ctx.lineTo(W*0.42,H*0.44);ctx.lineTo(W*0.43,H*0.48);ctx.lineTo(W*0.43,H*0.72);
+    ctx.lineTo(W*0.55,H*0.72);ctx.lineTo(W*0.55,H*0.65);ctx.lineTo(W*0.6,H*0.6);ctx.lineTo(W*0.65,H*0.65);ctx.lineTo(W*0.65,H*0.72);
+    ctx.lineTo(W*0.7,H*0.72);ctx.lineTo(W*0.7,H*0.5);ctx.lineTo(W*0.71,H*0.46);ctx.lineTo(W*0.715,H*0.44);ctx.lineTo(W*0.72,H*0.46);ctx.lineTo(W*0.73,H*0.5);ctx.lineTo(W*0.73,H*0.72);
+    ctx.lineTo(W*0.8,H*0.72);ctx.lineTo(W*0.8,H*0.62);ctx.lineTo(W*0.9,H*0.62);ctx.lineTo(W*0.9,H*0.72);ctx.lineTo(W,H*0.78);ctx.lineTo(W,H);ctx.closePath();ctx.fill();
+    stars.forEach(s=>{s.a+=s.da;if(s.a>1||s.a<0)s.da*=-1;ctx.globalAlpha=Math.max(0,s.a);ctx.fillStyle=s.color;ctx.beginPath();ctx.arc(s.x%W,s.y%H,s.r,0,Math.PI*2);ctx.fill();});
+    goldDust.forEach(g=>{g.x=(g.x+g.vx+W*100)%W;g.y=(g.y+g.vy+H*100)%H;ctx.globalAlpha=g.a*(0.5+0.5*Math.sin(t*0.03+g.x));const grd=ctx.createRadialGradient(g.x,g.y,0,g.x,g.y,g.r*2);grd.addColorStop(0,g.color);grd.addColorStop(1,'transparent');ctx.fillStyle=grd;ctx.beginPath();ctx.arc(g.x,g.y,g.r*2,0,Math.PI*2);ctx.fill();});
+    ctx.globalAlpha=1;t++;requestAnimationFrame(draw);
   }
   draw();
 })();
-
-// Eid sparks
-(function(){
-  const container = document.getElementById('eidScreen');
-  for(let i = 0; i < 30; i++){
-    const s = document.createElement('div');
-    s.className = 'eid-spark';
-    s.style.cssText = `left:${Math.random()*92+4}%;top:${10+Math.random()*70}%;--sd:${6+Math.random()*10}s;--sdl:${Math.random()*10}s;--stx:${(Math.random()-.5)*120}px;--sty:${-20-Math.random()*90}px;--stx2:${(Math.random()-.5)*140}px;--sty2:${-30-Math.random()*60}px`;
-    container.appendChild(s);
-  }
-})();
+(function(){const c=document.getElementById('eidScreen');for(let i=0;i<30;i++){const s=document.createElement('div');s.className='eid-spark';s.style.cssText=`left:${Math.random()*92+4}%;top:${10+Math.random()*70}%;--sd:${6+Math.random()*10}s;--sdl:${Math.random()*10}s;--stx:${(Math.random()-.5)*120}px;--sty:${-20-Math.random()*90}px;--stx2:${(Math.random()-.5)*140}px;--sty2:${-30-Math.random()*60}px`;c.appendChild(s);}})();
 
 /* ============================================================
-   ENTER FROM EID → show intro
+   ENTER FROM EID
 ============================================================ */
 function enterFromEid(){
-  const eid = document.getElementById('eidScreen');
-  const overlay = document.getElementById('transOverlay');
-  const intro = document.getElementById('intro');
-
-  // 1. Fade overlay in
+  const eid=document.getElementById('eidScreen');
+  const overlay=document.getElementById('transOverlay');
+  const intro=document.getElementById('intro');
   overlay.classList.add('show');
-
-  // 2. After brief pause, fade eid out and show intro
-  setTimeout(() => {
-    eid.classList.add('hide');
-    intro.classList.add('visible');
-    // Switch music: start Idul Fitri music → already playing from eid autoplay
-    // Here we just make player visible with eid song
-    openPlayerWithEidSong();
-  }, 500);
-
-  setTimeout(() => {
-    overlay.classList.remove('show');
-    eid.style.display = 'none';
-  }, 2200);
+  setTimeout(()=>{eid.classList.add('hide');intro.classList.add('visible');},500);
+  setTimeout(()=>{overlay.classList.remove('show');eid.style.display='none';},2200);
 }
 
 /* ============================================================
    INTRO CANVAS
 ============================================================ */
 (function(){
-  const canvas = document.getElementById('introCanvas');
-  const ctx = canvas.getContext('2d');
-  let W, H, particles = [];
-
-  function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
-  resize(); window.addEventListener('resize', resize);
-
-  const leafColors = ['#52b788','#2d6a4f','#95d5b2','#b7e4c7','#74c69d','#40916c'];
-  class Particle{
-    constructor(){ this.reset(true); }
-    reset(init=false){
-      this.x = Math.random() * W;
-      this.y = init ? Math.random() * H : -20;
-      this.size = Math.random() * 6 + 3;
-      this.color = leafColors[Math.floor(Math.random() * leafColors.length)];
-      this.vx = (Math.random() - .5) * 1.2;
-      this.vy = Math.random() * 0.8 + 0.3;
-      this.angle = Math.random() * Math.PI * 2;
-      this.spin = (Math.random() - .5) * 0.06;
-      this.alpha = Math.random() * 0.7 + 0.3;
-    }
-    update(){
-      this.x += this.vx + Math.sin(this.angle) * 0.4;
-      this.y += this.vy;
-      this.angle += this.spin;
-      if(this.y > H+20 || this.x < -20 || this.x > W+20) this.reset();
-    }
-    draw(){
-      ctx.save(); ctx.translate(this.x, this.y); ctx.rotate(this.angle);
-      ctx.globalAlpha = this.alpha;
-      ctx.fillStyle = this.color;
-      ctx.beginPath();
-      ctx.moveTo(0,-this.size); ctx.bezierCurveTo(this.size,-this.size/2,this.size,this.size/2,0,this.size);
-      ctx.bezierCurveTo(-this.size,this.size/2,-this.size,-this.size/2,0,-this.size);
-      ctx.fill(); ctx.restore();
-    }
-  }
-
-  for(let i = 0; i < 90; i++) particles.push(new Particle());
-
-  function drawTrees(){
-    ctx.fillStyle = 'rgba(2,8,6,0.65)';
-    ctx.beginPath(); ctx.moveTo(0, H);
-    let pts = [];
-    for(let x = 0; x <= W; x += 80){
-      const h = 60 + Math.sin(x*0.012)*40 + Math.sin(x*0.031)*30;
-      pts.push({x, y: H-h});
-    }
-    ctx.moveTo(0, H);
-    pts.forEach((p,i) => { if(i===0) ctx.lineTo(p.x,p.y); else ctx.lineTo(p.x,p.y); });
-    ctx.lineTo(W, H); ctx.closePath(); ctx.fill();
-
-    ctx.fillStyle = 'rgba(2,8,6,0.85)';
-    ctx.beginPath(); ctx.moveTo(0, H);
-    for(let x = 0; x <= W; x += 60){
-      const h = 35 + Math.sin(x*0.018+1)*28 + Math.sin(x*0.045+2)*18;
-      ctx.lineTo(x, H-h);
-    }
-    ctx.lineTo(W, H); ctx.closePath(); ctx.fill();
-  }
-
+  const canvas=document.getElementById('introCanvas');
+  const ctx=canvas.getContext('2d');
+  let W,H,particles=[];
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  resize();window.addEventListener('resize',resize);
+  const leafColors=['#52b788','#2d6a4f','#95d5b2','#b7e4c7','#74c69d','#40916c'];
+  class Particle{constructor(){this.reset(true);}reset(init=false){this.x=Math.random()*W;this.y=init?Math.random()*H:-20;this.size=Math.random()*6+3;this.color=leafColors[Math.floor(Math.random()*leafColors.length)];this.vx=(Math.random()-.5)*1.2;this.vy=Math.random()*0.8+0.3;this.angle=Math.random()*Math.PI*2;this.spin=(Math.random()-.5)*0.06;this.alpha=Math.random()*0.7+0.3;}update(){this.x+=this.vx+Math.sin(this.angle)*0.4;this.y+=this.vy;this.angle+=this.spin;if(this.y>H+20||this.x<-20||this.x>W+20)this.reset();}draw(){ctx.save();ctx.translate(this.x,this.y);ctx.rotate(this.angle);ctx.globalAlpha=this.alpha;ctx.fillStyle=this.color;ctx.beginPath();ctx.moveTo(0,-this.size);ctx.bezierCurveTo(this.size,-this.size/2,this.size,this.size/2,0,this.size);ctx.bezierCurveTo(-this.size,this.size/2,-this.size,-this.size/2,0,-this.size);ctx.fill();ctx.restore();}}
+  for(let i=0;i<90;i++)particles.push(new Particle());
+  function drawTrees(){ctx.fillStyle='rgba(2,8,6,0.65)';ctx.beginPath();ctx.moveTo(0,H);let pts=[];for(let x=0;x<=W;x+=80){const h=60+Math.sin(x*0.012)*40+Math.sin(x*0.031)*30;pts.push({x,y:H-h});}ctx.moveTo(0,H);pts.forEach((p,i)=>{if(i===0)ctx.lineTo(p.x,p.y);else ctx.lineTo(p.x,p.y);});ctx.lineTo(W,H);ctx.closePath();ctx.fill();ctx.fillStyle='rgba(2,8,6,0.85)';ctx.beginPath();ctx.moveTo(0,H);for(let x=0;x<=W;x+=60){const h=35+Math.sin(x*0.018+1)*28+Math.sin(x*0.045+2)*18;ctx.lineTo(x,H-h);}ctx.lineTo(W,H);ctx.closePath();ctx.fill();}
   let raf;
-  function animate(){
-    ctx.clearRect(0,0,W,H);
-    const grd = ctx.createLinearGradient(0,0,0,H);
-    grd.addColorStop(0,'#020806'); grd.addColorStop(1,'#0a1a0e');
-    ctx.fillStyle = grd; ctx.fillRect(0,0,W,H);
-    particles.forEach(p => { p.update(); p.draw(); });
-    drawTrees();
-    raf = requestAnimationFrame(animate);
-  }
-  animate();
-  window._stopIntroCanvas = () => { cancelAnimationFrame(raf); };
+  function animate(){ctx.clearRect(0,0,W,H);const grd=ctx.createLinearGradient(0,0,0,H);grd.addColorStop(0,'#020806');grd.addColorStop(1,'#0a1a0e');ctx.fillStyle=grd;ctx.fillRect(0,0,W,H);particles.forEach(p=>{p.update();p.draw();});drawTrees();raf=requestAnimationFrame(animate);}
+  animate();window._stopIntroCanvas=()=>{cancelAnimationFrame(raf);};
 })();
-
-// Intro fireflies
-(function(){
-  const c = document.getElementById('introFF');
-  for(let i = 0; i < 24; i++){
-    const f = document.createElement('div'); f.className = 'ifly';
-    f.style.cssText = `left:${Math.random()*92+4}%;top:${15+Math.random()*65}%;--d:${6+Math.random()*9}s;--dl:${Math.random()*10}s;--tx:${(Math.random()-.5)*120}px;--ty:${-20-Math.random()*80}px;--tx2:${(Math.random()-.5)*140}px;--ty2:${-30-Math.random()*60}px`;
-    c.appendChild(f);
-  }
-})();
+(function(){const c=document.getElementById('introFF');for(let i=0;i<24;i++){const f=document.createElement('div');f.className='ifly';f.style.cssText=`left:${Math.random()*92+4}%;top:${15+Math.random()*65}%;--d:${6+Math.random()*9}s;--dl:${Math.random()*10}s;--tx:${(Math.random()-.5)*120}px;--ty:${-20-Math.random()*80}px;--tx2:${(Math.random()-.5)*140}px;--ty2:${-30-Math.random()*60}px`;c.appendChild(f);}})();
 
 /* ============================================================
    ENTER SITE
 ============================================================ */
 function enterSite(){
-  const intro = document.getElementById('intro');
+  const intro=document.getElementById('intro');
   intro.classList.add('hide');
-  if(window._stopIntroCanvas) window._stopIntroCanvas();
-  setTimeout(() => { intro.style.display = 'none'; }, 1500);
-  // Switch music to Birds of a Feather / nature playlist
-  setTimeout(() => { switchToNatureMusic(); }, 800);
+  if(window._stopIntroCanvas)window._stopIntroCanvas();
+  setTimeout(()=>{intro.style.display='none';},1500);
+  // Buka player dan mulai lagu pertama
+  setTimeout(()=>{
+    document.getElementById('musicPlayer').classList.add('open');
+    document.getElementById('musicNavBtn').textContent='🎶';
+    playTrack(0);
+  },900);
 }
 
 /* ============================================================
    CURSOR
 ============================================================ */
-const cur = document.getElementById('cursor'), curD = document.getElementById('cursorDot');
-document.addEventListener('mousemove', e => {
-  if(!cur) return;
-  cur.style.left = e.clientX+'px'; cur.style.top = e.clientY+'px';
-  curD.style.left = e.clientX+'px'; curD.style.top = e.clientY+'px';
-});
-document.querySelectorAll('button,a,.nature-card,.animal-card,.mem-card').forEach(el => {
-  el.addEventListener('mouseenter', () => cur && cur.classList.add('big'));
-  el.addEventListener('mouseleave', () => cur && cur.classList.remove('big'));
-});
+const cur=document.getElementById('cursor'),curD=document.getElementById('cursorDot');
+document.addEventListener('mousemove',e=>{if(!cur)return;cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';curD.style.left=e.clientX+'px';curD.style.top=e.clientY+'px';});
+document.querySelectorAll('button,a,.nature-card,.animal-card,.mem-card').forEach(el=>{el.addEventListener('mouseenter',()=>cur&&cur.classList.add('big'));el.addEventListener('mouseleave',()=>cur&&cur.classList.remove('big'));});
 
 /* ============================================================
    THEME TOGGLE
 ============================================================ */
-let isNight = true;
+let isNight=true;
 function toggleTheme(){
-  isNight = !isNight;
-  const theme = isNight ? 'night' : 'day';
-  document.documentElement.setAttribute('data-theme', theme);
-  document.getElementById('tIcon').textContent = isNight ? '☀️' : '🌙';
-  document.getElementById('tLabel').textContent = isNight ? 'Mode Siang' : 'Mode Malam';
-  document.getElementById('heroBadge').textContent = isNight ? '🌙 Selamat Malam, Richy' : '☀️ Selamat Pagi, Richy';
-  updateTreeColors();
-  drawCatch();
+  isNight=!isNight;
+  document.documentElement.setAttribute('data-theme',isNight?'night':'day');
+  document.getElementById('tIcon').textContent=isNight?'☀️':'🌙';
+  document.getElementById('tLabel').textContent=isNight?'Mode Siang':'Mode Malam';
+  document.getElementById('heroBadge').textContent=isNight?'🌙 Selamat Malam, Richy':'☀️ Selamat Pagi, Richy';
+  updateTreeColors();drawCatch();
 }
 function updateTreeColors(){
-  const day = !isNight;
-  document.querySelectorAll('.tbn').forEach(el => el.setAttribute('fill', day?'#3a8c52':'#1a4731'));
-  document.querySelectorAll('.tmn').forEach((el,i) => el.setAttribute('fill', i%2===0?(day?'#52b788':'#2d6a4f'):(day?'#74c69d':'#52b788')));
-  document.querySelectorAll('.tfn').forEach((el,i) => el.setAttribute('fill', i%2===0?(day?'#2d6a4f':'#0d2818'):(day?'#3a8c52':'#1a4731')));
-  document.getElementById('mtnPath').setAttribute('fill', day?'url(#mgD)':'url(#mg)');
-  document.getElementById('groundRect').setAttribute('fill', day?'#2d6a4f':'#0d2818');
+  const day=!isNight;
+  document.querySelectorAll('.tbn').forEach(el=>el.setAttribute('fill',day?'#3a8c52':'#1a4731'));
+  document.querySelectorAll('.tmn').forEach((el,i)=>el.setAttribute('fill',i%2===0?(day?'#52b788':'#2d6a4f'):(day?'#74c69d':'#52b788')));
+  document.querySelectorAll('.tfn').forEach((el,i)=>el.setAttribute('fill',i%2===0?(day?'#2d6a4f':'#0d2818'):(day?'#3a8c52':'#1a4731')));
+  document.getElementById('mtnPath').setAttribute('fill',day?'url(#mgD)':'url(#mg)');
+  document.getElementById('groundRect').setAttribute('fill',day?'#2d6a4f':'#0d2818');
 }
 
 /* ============================================================
    STARS / FIREFLIES / LEAVES
 ============================================================ */
-const sc = document.getElementById('starsC');
-for(let i = 0; i < 95; i++){
-  const s = document.createElement('div'); s.className = 'star';
-  const z = Math.random()*2.8+0.8;
-  s.style.cssText = `width:${z}px;height:${z}px;left:${Math.random()*100}%;top:${Math.random()*65}%;--dur:${1.5+Math.random()*4}s;--delay:${Math.random()*6}s`;
-  sc.appendChild(s);
-}
-
-const fc = document.getElementById('ffC');
-for(let i = 0; i < 20; i++){
-  const f = document.createElement('div'); f.className = 'firefly';
-  f.style.cssText = `left:${Math.random()*88+6}%;top:${18+Math.random()*52}%;--dur:${6+Math.random()*9}s;--delay:${Math.random()*11}s;--tx:${(Math.random()-.5)*110}px;--ty:${-18-Math.random()*70}px;--tx2:${(Math.random()-.5)*130}px;--ty2:${-28-Math.random()*55}px`;
-  fc.appendChild(f);
-}
-
-const lc = document.getElementById('lvC');
-const lclr = ['#52b788','#2d6a4f','#95d5b2','#b7e4c7','#e9c46a','#a8dadc','#74c69d'];
-for(let i = 0; i < 22; i++){
-  const l = document.createElement('div'); l.className = 'leaf-fall';
-  l.style.cssText = `left:${Math.random()*100}%;--sz:${7+Math.random()*11}px;--lc:${lclr[Math.floor(Math.random()*lclr.length)]};--dur:${7+Math.random()*9}s;--delay:${Math.random()*14}s;--drift:${(Math.random()-.5)*200}px`;
-  lc.appendChild(l);
-}
+const sc=document.getElementById('starsC');
+for(let i=0;i<95;i++){const s=document.createElement('div');s.className='star';const z=Math.random()*2.8+0.8;s.style.cssText=`width:${z}px;height:${z}px;left:${Math.random()*100}%;top:${Math.random()*65}%;--dur:${1.5+Math.random()*4}s;--delay:${Math.random()*6}s`;sc.appendChild(s);}
+const fc=document.getElementById('ffC');
+for(let i=0;i<20;i++){const f=document.createElement('div');f.className='firefly';f.style.cssText=`left:${Math.random()*88+6}%;top:${18+Math.random()*52}%;--dur:${6+Math.random()*9}s;--delay:${Math.random()*11}s;--tx:${(Math.random()-.5)*110}px;--ty:${-18-Math.random()*70}px;--tx2:${(Math.random()-.5)*130}px;--ty2:${-28-Math.random()*55}px`;fc.appendChild(f);}
+const lc=document.getElementById('lvC');
+const lclr=['#52b788','#2d6a4f','#95d5b2','#b7e4c7','#e9c46a','#a8dadc','#74c69d'];
+for(let i=0;i<22;i++){const l=document.createElement('div');l.className='leaf-fall';l.style.cssText=`left:${Math.random()*100}%;--sz:${7+Math.random()*11}px;--lc:${lclr[Math.floor(Math.random()*lclr.length)]};--dur:${7+Math.random()*9}s;--delay:${Math.random()*14}s;--drift:${(Math.random()-.5)*200}px`;lc.appendChild(l);}
 
 /* ============================================================
    SCROLL OBSERVE
 ============================================================ */
-const ob = new IntersectionObserver(e => { e.forEach(x => { if(x.isIntersecting) x.target.classList.add('visible'); }); }, {threshold:0.12});
-document.querySelectorAll('.obs').forEach(el => ob.observe(el));
-
-const secs = document.querySelectorAll('section');
-const nls = document.querySelectorAll('.nav-links a');
-const nob = new IntersectionObserver(e => {
-  e.forEach(x => {
-    if(x.isIntersecting){
-      nls.forEach(a => a.classList.remove('active'));
-      const lk = document.querySelector(`.nav-links a[href="#${x.target.id}"]`);
-      if(lk) lk.classList.add('active');
-    }
-  });
-}, {threshold:0.5});
-secs.forEach(s => nob.observe(s));
+const ob=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');});},{threshold:0.12});
+document.querySelectorAll('.obs').forEach(el=>ob.observe(el));
+const secs=document.querySelectorAll('section');
+const nls=document.querySelectorAll('.nav-links a');
+const nob=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){nls.forEach(a=>a.classList.remove('active'));const lk=document.querySelector(`.nav-links a[href="#${x.target.id}"]`);if(lk)lk.classList.add('active');}});},{threshold:0.5});
+secs.forEach(s=>nob.observe(s));
 
 /* ============================================================
    MOBILE MENU
 ============================================================ */
-function toggleMenu(){ document.getElementById('mMenu').classList.toggle('open'); }
-function closeMenu(){ document.getElementById('mMenu').classList.remove('open'); }
-document.addEventListener('click', e => {
-  const m = document.getElementById('mMenu'), h = document.getElementById('ham');
-  if(!m.contains(e.target) && !h.contains(e.target)) m.classList.remove('open');
-});
+function toggleMenu(){document.getElementById('mMenu').classList.toggle('open');}
+function closeMenu(){document.getElementById('mMenu').classList.remove('open');}
+document.addEventListener('click',e=>{const m=document.getElementById('mMenu'),h=document.getElementById('ham');if(!m.contains(e.target)&&!h.contains(e.target))m.classList.remove('open');});
 
 /* ============================================================
-   MUSIC PLAYER — YouTube IFrame API
-   Phase 1: Idul Fitri songs
-   Phase 2: Birds of a Feather + nature playlist (after enterSite)
+   MUSIC PLAYER — HTML5 Audio (Local Files)
+
+   ╔══════════════════════════════════════════════════════════╗
+   ║       🎵  PANDUAN MENAMBAH / GANTI LAGU  🎵             ║
+   ╠══════════════════════════════════════════════════════════╣
+   ║                                                          ║
+   ║  Letakkan file audio di folder yang sama dengan          ║
+   ║  file HTML ini (atau sesuaikan path-nya).                ║
+   ║                                                          ║
+   ║  Format yang didukung: .mp3  .ogg  .wav  .flac  .aac    ║
+   ║                                                          ║
+   ║  Contoh struktur folder:                                 ║
+   ║    📁 project/                                           ║
+   ║      📄 untuk-richy.html   ← file ini                   ║
+   ║      📁 music/                                           ║
+   ║        🎵 birds-of-a-feather.mp3                        ║
+   ║        🎵 the-fate-of-ophelia.mp3                       ║
+   ║        🎵 forest-ambience.mp3                           ║
+   ║                                                          ║
+   ║  Format setiap lagu di playlist:                         ║
+   ║  {                                                       ║
+   ║    title:  'Nama Lagu',      ← tampil di player         ║
+   ║    artist: 'Nama Artis',                                 ║
+   ║    src:    'music/nama-file.mp3',  ← path ke file       ║
+   ║    emoji:  '🐦',             ← emoji bebas              ║
+   ║  },                                                      ║
+   ║                                                          ║
+   ║  ⚠️  src adalah path RELATIF dari lokasi file HTML.     ║
+   ║     Gunakan 'music/lagu.mp3' jika ada di subfolder.     ║
+   ║     Atau 'lagu.mp3' jika satu folder dengan HTML.       ║
+   ║                                                          ║
+   ╚══════════════════════════════════════════════════════════╝
 ============================================================ */
-/* ╔══════════════════════════════════════════════════════════════╗
-   ║           🎵  PANDUAN MENAMBAH / GANTI LAGU  🎵             ║
-   ╠══════════════════════════════════════════════════════════════╣
-   ║                                                              ║
-   ║  Ada DUA playlist di sini:                                   ║
-   ║    1. eidPlaylist  → lagu di halaman Idul Fitri              ║
-   ║    2. naturePlaylist → lagu setelah masuk ke hutan           ║
-   ║       (lagu PERTAMA di naturePlaylist = Birds of a Feather)  ║
-   ║                                                              ║
-   ║  Cara mendapatkan YouTube ID:                                ║
-   ║  → Buka YouTube, cari lagunya                               ║
-   ║  → Lihat URL: youtube.com/watch?v=XXXXX                     ║
-   ║  → Bagian setelah "v=" itulah ytId-nya                      ║
-   ║  → Contoh: https://youtube.com/watch?v=IL0CIQXVX8k          ║
-   ║             ytId = IL0CIQXVX8k                               ║
-   ║                                                              ║
-   ║  Format setiap lagu:                                         ║
-   ║  {                                                           ║
-   ║    title:  'Nama Lagu',      ← nama yang tampil di player   ║
-   ║    artist: 'Nama Artis',     ← nama artis                   ║
-   ║    ytId:   'XXXXXXXXXXX',    ← ID dari YouTube (11 karakter)║
-   ║    dur:    '3:45',           ← durasi (hanya teks/label)    ║
-   ║    emoji:  '🎵',             ← emoji bebas sesukamu         ║
-   ║  },                                                          ║
-   ║                                                              ║
-   ║  ⚠️  Catatan penting:                                        ║
-   ║  - Setiap lagu dipisah koma (,) kecuali yang terakhir       ║
-   ║  - ytId harus dalam tanda petik tunggal '...'               ║
-   ║  - Bisa tambah lagu sebanyak yang kamu mau                  ║
-   ║  - Untuk hapus lagu: hapus satu baris {...}, beserta komanya║
-   ║                                                              ║
-   ╚══════════════════════════════════════════════════════════════╝ */
-
-/* ── PLAYLIST 1: Lagu Idul Fitri (muncul di halaman selamat) ──
-   Ganti atau tambah lagu sesuai seleramu di bawah ini:         */
-const eidPlaylist = [
-  {title:'Selamat Hari Lebaran',  artist:'Ismail Marzuki',   ytId:'6bXCDs_S_wE', dur:'3:15',  emoji:'🌙'},
-  {title:'Takbiran Idul Fitri',   artist:'Majelis Takbir',   ytId:'pXU4l7S6lqg', dur:'10:00', emoji:'☪️'},
-  {title:'Lebaran',               artist:'Various Artists',  ytId:'JT7bEsIkMts', dur:'4:02',  emoji:'🏮'},
-  {title:'Ramadan & Idul Fitri',  artist:'Sami Yusuf',       ytId:'ZAbqVMOCWJE', dur:'5:30',  emoji:'✨'},
-  // ← Tambah lagu Idul Fitri baru di sini, salin format di atas
+const playlist = [
+  { title: 'Birds of a Feather',      artist: 'Billie Eilish',     src: 'music/birds-of-a-feather.mp3',    emoji: '🐦' },
+  { title: 'The Fate of Ophelia',     artist: 'Taylor Swift',      src: 'music/the-fate-of-ophelia.mp3',   emoji: '🎵' },
+  { title: 'Forest Ambience',         artist: 'Nature Vibes',      src: 'music/forest-ambience.mp3',       emoji: '🌿' },
+  { title: 'Relaxing Nature Sounds',  artist: 'Peaceful Melodies', src: 'music/nature-sounds.mp3',         emoji: '🌊' },
+  { title: 'Midnight Lo-fi',          artist: 'ChilledCow',        src: 'music/midnight-lofi.mp3',         emoji: '🌙' },
+  { title: 'Cozy Jazz & Forest',      artist: 'Ambient Cafe',      src: 'music/cozy-jazz.mp3',             emoji: '☕' },
+  { title: 'Morning Birds & Piano',   artist: 'Nature Piano',      src: 'music/morning-birds.mp3',         emoji: '🐦' },
+  { title: 'Deep Forest',             artist: 'Relaxing World',    src: 'music/deep-forest.mp3',           emoji: '🍃' },
+  // ← Tambah lagu baru di sini
 ];
 
-/* ── PLAYLIST 2: Lagu Alam / Nature (muncul setelah masuk hutan) ──
-   ⭐ Lagu PERTAMA (index 0) = yang langsung diputar saat masuk.
-      Sekarang: Birds of a Feather — Billie Eilish
-   Ganti atau tambah lagu di bawah ini:                         */
-const naturePlaylist = [
-  {title:'Birds of a Feather',       artist:'Billie Eilish',    ytId:'7dH4eOWtc2M', dur:'3:30',    emoji:'🐦'}, // ← lagu pertama (langsung diputar)
-  {title:'The Fate of Ophelia',      artist:'Taylor Swift',     ytId:'lZEf_izPCfY', dur:'3:46',    emoji:'🎵'},
-  {title:'Forest Ambience & Lo-fi',  artist:'Nature Vibes',     ytId:'oMedpSJZgDA', dur:'3:12:00', emoji:'🌿'},
-  {title:'Relaxing Nature Sounds',   artist:'Peaceful Melodies',ytId:'eKFTSSKCfni', dur:'3:00:00', emoji:'🌊'},
-  {title:'Midnight Lo-fi Chill',     artist:'ChilledCow',       ytId:'5qap5aO4i9A', dur:'Live',    emoji:'🌙'},
-  {title:'Cozy Jazz & Forest',       artist:'Ambient Cafe',     ytId:'DSGyEsJ17cI', dur:'2:30:00', emoji:'☕'},
-  {title:'Morning Birds & Piano',    artist:'Nature Piano',     ytId:'bP9gMpl1gyQ', dur:'1:00:00', emoji:'🐦'},
-  {title:'Deep Forest Sleep Music',  artist:'Relaxing World',   ytId:'rkZl7Bhrd3g', dur:'8:00:00', emoji:'🍃'},
-  // ← Tambah lagu alam baru di sini, salin format di atas
-];
+const audio = document.getElementById('audioEl');
+let curTrack = 0, isShuffle = false, isRepeat = false;
 
-let activePlaylist = eidPlaylist;
-let musicPhase = 'eid'; // 'eid' or 'nature'
-let curTrack = 0, isPlaying = false, isShuffle = false, isRepeat = false;
-let ytPlayer = null, ytReady = false, progressInt = null;
+// Setup audio events
+audio.addEventListener('timeupdate', updateProgress);
+audio.addEventListener('loadedmetadata', updateDuration);
+audio.addEventListener('ended', onEnded);
+audio.addEventListener('play', ()=>{ updatePlayBtn(true); document.getElementById('playerArt').classList.add('playing'); });
+audio.addEventListener('pause', ()=>{ updatePlayBtn(false); document.getElementById('playerArt').classList.remove('playing'); });
+audio.addEventListener('error', ()=>{ document.getElementById('playerArtist').textContent = '⚠ File tidak ditemukan'; });
 
-(function(){
-  const s = document.createElement('script');
-  s.src = 'https://www.youtube.com/iframe_api';
-  document.head.appendChild(s);
-})();
-
-window.onYouTubeIframeAPIReady = function(){
-  ytReady = true;
-  ytPlayer = new YT.Player('ytFrame', {
-    height:'1', width:'1',
-    videoId: activePlaylist[curTrack].ytId,
-    playerVars:{autoplay:0, controls:0, disablekb:1, rel:0, modestbranding:1},
-    events:{
-      onReady: () => { renderPlaylist(); updatePlayerUI(); },
-      onStateChange: (e) => {
-        if(e.data === YT.PlayerState.ENDED){
-          if(isRepeat){ ytPlayer.seekTo(0); ytPlayer.playVideo(); }
-          else nextTrack();
-        }
-        if(e.data === YT.PlayerState.PLAYING){
-          isPlaying = true; updatePlayBtn();
-          document.getElementById('playerArt').classList.add('playing');
-          startProgress();
-        }
-        if(e.data === YT.PlayerState.PAUSED){
-          isPlaying = false; updatePlayBtn();
-          document.getElementById('playerArt').classList.remove('playing');
-          stopProgress();
-        }
-      }
-    }
-  });
-};
-
-function openPlayerWithEidSong(){
-  const player = document.getElementById('musicPlayer');
-  player.classList.add('open');
-  document.getElementById('musicNote').textContent = '🎶';
-  if(ytReady && ytPlayer){
-    playTrack(0);
-  }
-}
-
-function switchToNatureMusic(){
-  // Transition to nature playlist starting with Birds of a Feather
-  activePlaylist = naturePlaylist;
-  musicPhase = 'nature';
-  curTrack = 0;
-
-  // Update phase tag
-  const tag = document.getElementById('phaseTag');
-  tag.className = 'music-phase-tag nature';
-  tag.textContent = 'Nature';
-
-  // Update playlist header
-  document.getElementById('playlistTitle').textContent = '🌿 Playlist Alam';
-
-  // Show notification
-  const notif = document.getElementById('musicSwitchNotif');
-  notif.textContent = '🐦 Birds of a Feather — Billie Eilish';
-  notif.classList.add('show');
-  setTimeout(() => { notif.classList.remove('show'); }, 3500);
-
-  // Play Birds of a Feather
-  if(ytReady && ytPlayer){
-    playTrack(0);
-  }
-
+function playTrack(i){
+  curTrack = i;
+  const t = playlist[i];
+  audio.src = t.src;
+  audio.play().catch(()=>{}); // autoplay might be blocked; user interaction needed
+  document.getElementById('playerArtEmoji').textContent = t.emoji;
+  document.getElementById('playerTitle').textContent = t.title;
+  document.getElementById('playerArtist').textContent = t.artist;
+  document.getElementById('playerFill').style.width = '0%';
+  document.getElementById('playerCurr').textContent = '0:00';
+  document.getElementById('playerDur').textContent = '–:––';
   renderPlaylist();
 }
 
+function togglePlay(){
+  if(audio.paused) audio.play().catch(()=>{});
+  else audio.pause();
+}
+
+function prevTrack(){
+  if(audio.currentTime > 3){ audio.currentTime = 0; return; }
+  curTrack = isShuffle
+    ? Math.floor(Math.random() * playlist.length)
+    : (curTrack - 1 + playlist.length) % playlist.length;
+  playTrack(curTrack);
+}
+
+function nextTrack(){
+  curTrack = isShuffle
+    ? Math.floor(Math.random() * playlist.length)
+    : (curTrack + 1) % playlist.length;
+  playTrack(curTrack);
+}
+
+function onEnded(){
+  if(isRepeat){ audio.currentTime = 0; audio.play().catch(()=>{}); }
+  else nextTrack();
+}
+
+function toggleShuffle(){
+  isShuffle = !isShuffle;
+  document.getElementById('btnShuffle').classList.toggle('active', isShuffle);
+}
+function toggleRepeat(){
+  isRepeat = !isRepeat;
+  document.getElementById('btnRepeat').classList.toggle('active', isRepeat);
+}
+function updatePlayBtn(playing){
+  document.getElementById('btnPlay').textContent = playing ? '⏸' : '▶';
+}
+
+function updateProgress(){
+  const cur = audio.currentTime || 0;
+  const dur = audio.duration || 0;
+  if(dur > 0){
+    document.getElementById('playerFill').style.width = (cur / dur * 100) + '%';
+    document.getElementById('playerCurr').textContent = fmtTime(cur);
+  }
+}
+function updateDuration(){
+  const dur = audio.duration || 0;
+  if(isFinite(dur)) document.getElementById('playerDur').textContent = fmtTime(dur);
+}
+function fmtTime(s){
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60);
+  return m + ':' + (sec < 10 ? '0' : '') + sec;
+}
+
+// Click progress bar to seek
+document.getElementById('playerBar').addEventListener('click', function(e){
+  const r = this.getBoundingClientRect();
+  const pct = (e.clientX - r.left) / r.width;
+  if(isFinite(audio.duration)) audio.currentTime = pct * audio.duration;
+});
+
 function renderPlaylist(){
-  const container = document.getElementById('playlistItems');
-  container.innerHTML = activePlaylist.map((t,i) => `
-    <div class="pl-item ${i===curTrack?'playing':''}" onclick="playTrack(${i})">
-      <div class="pl-num"><span class="pl-num-n">${i+1}</span></div>
+  document.getElementById('playlistItems').innerHTML = playlist.map((t, i) => `
+    <div class="pl-item ${i === curTrack ? 'playing' : ''}" onclick="playTrack(${i})">
+      <div class="pl-num"><span class="pl-num-n">${i + 1}</span></div>
       <div class="pl-info">
         <div class="pl-name">${t.emoji} ${t.title}</div>
         <div class="pl-artist">${t.artist}</div>
       </div>
-      <div class="pl-dur">${t.dur}</div>
     </div>`).join('');
 }
-
-function updatePlayerUI(){
-  const t = activePlaylist[curTrack];
-  const phaseTag = document.getElementById('phaseTag');
-  document.getElementById('playerTitle').innerHTML = `${t.title} <span class="music-phase-tag ${musicPhase}" id="phaseTag">${musicPhase === 'eid' ? 'Idul Fitri' : 'Nature'}</span>`;
-  document.getElementById('playerArtist').textContent = t.artist;
-  document.getElementById('playerArt').textContent = t.emoji;
-  document.getElementById('playerDur').textContent = t.dur;
-  document.getElementById('playerFill').style.width = '0%';
-  document.getElementById('playerCurr').textContent = '0:00';
-  renderPlaylist();
-}
-
-function playTrack(i){
-  curTrack = i;
-  if(!ytPlayer || !ytReady) return;
-  ytPlayer.loadVideoById(activePlaylist[i].ytId);
-  ytPlayer.playVideo();
-  isPlaying = true;
-  updatePlayerUI(); updatePlayBtn();
-  document.getElementById('playerArt').classList.add('playing');
-}
-
-function togglePlay(){
-  if(!ytPlayer || !ytReady){ playTrack(curTrack); return; }
-  if(isPlaying){ ytPlayer.pauseVideo(); }
-  else { ytPlayer.playVideo(); }
-}
-
-function prevTrack(){
-  if(isShuffle){ curTrack = Math.floor(Math.random() * activePlaylist.length); }
-  else { curTrack = (curTrack - 1 + activePlaylist.length) % activePlaylist.length; }
-  playTrack(curTrack);
-}
-function nextTrack(){
-  if(isShuffle){ curTrack = Math.floor(Math.random() * activePlaylist.length); }
-  else { curTrack = (curTrack + 1) % activePlaylist.length; }
-  playTrack(curTrack);
-}
-
-function toggleShuffle(){ isShuffle = !isShuffle; document.getElementById('btnShuffle').classList.toggle('active', isShuffle); }
-function toggleRepeat(){ isRepeat = !isRepeat; document.getElementById('btnRepeat').classList.toggle('active', isRepeat); }
-function updatePlayBtn(){ document.getElementById('btnPlay').textContent = isPlaying ? '⏸' : '▶'; }
-
-function startProgress(){
-  stopProgress();
-  progressInt = setInterval(() => {
-    if(!ytPlayer || !ytReady) return;
-    try{
-      const cur = ytPlayer.getCurrentTime() || 0;
-      const dur = ytPlayer.getDuration() || 0;
-      if(dur > 0){
-        document.getElementById('playerFill').style.width = (cur/dur*100)+'%';
-        document.getElementById('playerCurr').textContent = fmtTime(cur);
-        if(dur < 99999) document.getElementById('playerDur').textContent = fmtTime(dur);
-      }
-    }catch(e){}
-  }, 800);
-}
-function stopProgress(){ clearInterval(progressInt); }
-function fmtTime(s){ const m = Math.floor(s/60); const sec = Math.floor(s%60); return m+':'+(sec<10?'0':'')+sec; }
-
-document.getElementById('playerBar').addEventListener('click', function(e){
-  if(!ytPlayer || !ytReady) return;
-  const r = this.getBoundingClientRect();
-  const pct = (e.clientX - r.left) / r.width;
-  try{ ytPlayer.seekTo(pct * (ytPlayer.getDuration() || 0), true); }catch(e){}
-});
 
 function togglePlayer(){
   const p = document.getElementById('musicPlayer');
   p.classList.toggle('open');
-  if(!p.classList.contains('open')){ document.getElementById('playlistPanel').classList.remove('open'); }
-  document.getElementById('musicNote').textContent = p.classList.contains('open') ? '🎶' : '🎵';
+  if(!p.classList.contains('open')) document.getElementById('playlistPanel').classList.remove('open');
+  document.getElementById('musicNavBtn').textContent = p.classList.contains('open') ? '🎶' : '🎵';
 }
 function togglePlaylist(){
-  const pp = document.getElementById('playlistPanel');
-  pp.classList.toggle('open');
+  document.getElementById('playlistPanel').classList.toggle('open');
 }
+
+// Init playlist display
+renderPlaylist();
 
 /* ============================================================
    GAME SWITCH
 ============================================================ */
-function switchGame(n, btn){
-  document.querySelectorAll('.game-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.game-tab').forEach(t => t.classList.remove('active'));
+function switchGame(n,btn){
+  document.querySelectorAll('.game-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.game-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById(n+'-panel').classList.add('active');
   btn.classList.add('active');
-  if(n === 'quiz') initQuiz();
-  if(n === 'memory') initMemory();
-  if(n === 'catch') drawCatch();
+  if(n==='quiz')initQuiz();
+  if(n==='memory')initMemory();
+  if(n==='catch')drawCatch();
 }
 
 /* ============================================================
    QUIZ
 ============================================================ */
-const qData = [
+const qData=[
   {e:'🦊',q:'Apa yang membuat rubah mampu berburu di bawah salju tebal?',o:['Hidung super sensitif','Pendengaran sangat tajam','Penglihatan inframerah','Kumis deteksi getaran'],a:1,f:'Rubah bisa mendengar suara di bawah 1 meter salju! Telinganya mendeteksi frekuensi rendah dari hewan kecil.'},
   {e:'🌿',q:'Pohon berkomunikasi satu sama lain melalui…',o:['Getaran akar','Sinyal kimia di udara','Jaringan miselium jamur','Semua jawaban benar'],a:3,f:'Pohon berbagi nutrisi dan sinyal peringatan melalui jaringan jamur di tanah, udara, dan kontak akar!'},
   {e:'🌊',q:'Apa yang menyebabkan warna biru pada lautan dalam?',o:['Refleksi langit','Cahaya menyerap merah, hijau tersisa','Plankton biru','Mineral besi'],a:1,f:'Air menyerap cahaya merah & kuning — hanya biru yang diteruskan, memberi warna khas laut dalam!'},
