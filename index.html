@@ -794,3 +794,364 @@ footer{padding-bottom:calc(3rem + 65px + env(safe-area-inset-bottom));}
   function draw(){
     ctx.clearRect(0,0,W,H);
     const grad=ctx.createRadialGradient(W/2,H*0.35,0,W/2,H*0.35,W*0.85);
+    grad.addColorStop(0,'#1a000f');grad.addColorStop(0.5,'#0d0820');grad.addColorStop(1,'#050b1a');
+    ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='rgba(5,3,12,0.85)';
+    ctx.beginPath();ctx.moveTo(0,H);
+    ctx.lineTo(0,H*0.78);ctx.lineTo(W*0.06,H*0.78);ctx.lineTo(W*0.06,H*0.68);ctx.lineTo(W*0.08,H*0.62);ctx.lineTo(W*0.1,H*0.68);ctx.lineTo(W*0.14,H*0.68);ctx.lineTo(W*0.14,H*0.72);
+    ctx.lineTo(W*0.22,H*0.72);ctx.lineTo(W*0.22,H*0.6);ctx.bezierCurveTo(W*0.22,H*0.48,W*0.28,H*0.44,W*0.3,H*0.44);ctx.bezierCurveTo(W*0.32,H*0.44,W*0.38,H*0.48,W*0.38,H*0.6);ctx.lineTo(W*0.38,H*0.72);
+    ctx.lineTo(W*0.4,H*0.72);ctx.lineTo(W*0.4,H*0.48);ctx.lineTo(W*0.41,H*0.44);ctx.lineTo(W*0.415,H*0.42);ctx.lineTo(W*0.42,H*0.44);ctx.lineTo(W*0.43,H*0.48);ctx.lineTo(W*0.43,H*0.72);
+    ctx.lineTo(W*0.55,H*0.72);ctx.lineTo(W*0.55,H*0.65);ctx.lineTo(W*0.6,H*0.6);ctx.lineTo(W*0.65,H*0.65);ctx.lineTo(W*0.65,H*0.72);
+    ctx.lineTo(W*0.7,H*0.72);ctx.lineTo(W*0.7,H*0.5);ctx.lineTo(W*0.71,H*0.46);ctx.lineTo(W*0.715,H*0.44);ctx.lineTo(W*0.72,H*0.46);ctx.lineTo(W*0.73,H*0.5);ctx.lineTo(W*0.73,H*0.72);
+    ctx.lineTo(W*0.8,H*0.72);ctx.lineTo(W*0.8,H*0.62);ctx.lineTo(W*0.9,H*0.62);ctx.lineTo(W*0.9,H*0.72);ctx.lineTo(W,H*0.78);ctx.lineTo(W,H);ctx.closePath();ctx.fill();
+    stars.forEach(s=>{s.a+=s.da;if(s.a>1||s.a<0)s.da*=-1;ctx.globalAlpha=Math.max(0,s.a);ctx.fillStyle=s.color;ctx.beginPath();ctx.arc(s.x%W,s.y%H,s.r,0,Math.PI*2);ctx.fill();});
+    goldDust.forEach(g=>{g.x=(g.x+g.vx+W*100)%W;g.y=(g.y+g.vy+H*100)%H;ctx.globalAlpha=g.a*(0.5+0.5*Math.sin(t*0.03+g.x));const grd=ctx.createRadialGradient(g.x,g.y,0,g.x,g.y,g.r*2);grd.addColorStop(0,g.color);grd.addColorStop(1,'transparent');ctx.fillStyle=grd;ctx.beginPath();ctx.arc(g.x,g.y,g.r*2,0,Math.PI*2);ctx.fill();});
+    ctx.globalAlpha=1;t++;requestAnimationFrame(draw);
+  }
+  draw();
+})();
+(function(){const c=document.getElementById('eidScreen');for(let i=0;i<30;i++){const s=document.createElement('div');s.className='eid-spark';s.style.cssText=`left:${Math.random()*92+4}%;top:${10+Math.random()*70}%;--sd:${6+Math.random()*10}s;--sdl:${Math.random()*10}s;--stx:${(Math.random()-.5)*120}px;--sty:${-20-Math.random()*90}px;--stx2:${(Math.random()-.5)*140}px;--sty2:${-30-Math.random()*60}px`;c.appendChild(s);}})();
+
+/* ============================================================
+   ENTER FROM EID
+============================================================ */
+function enterFromEid(){
+  const eid=document.getElementById('eidScreen');
+  const overlay=document.getElementById('transOverlay');
+  const intro=document.getElementById('intro');
+  overlay.classList.add('show');
+  setTimeout(()=>{eid.classList.add('hide');intro.classList.add('visible');},500);
+  setTimeout(()=>{overlay.classList.remove('show');eid.style.display='none';},2200);
+}
+
+/* ============================================================
+   INTRO CANVAS
+============================================================ */
+(function(){
+  const canvas=document.getElementById('introCanvas');
+  const ctx=canvas.getContext('2d');
+  let W,H,particles=[];
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  resize();window.addEventListener('resize',resize);
+  const leafColors=['#52b788','#2d6a4f','#95d5b2','#b7e4c7','#74c69d','#40916c'];
+  class Particle{constructor(){this.reset(true);}reset(init=false){this.x=Math.random()*W;this.y=init?Math.random()*H:-20;this.size=Math.random()*6+3;this.color=leafColors[Math.floor(Math.random()*leafColors.length)];this.vx=(Math.random()-.5)*1.2;this.vy=Math.random()*0.8+0.3;this.angle=Math.random()*Math.PI*2;this.spin=(Math.random()-.5)*0.06;this.alpha=Math.random()*0.7+0.3;}update(){this.x+=this.vx+Math.sin(this.angle)*0.4;this.y+=this.vy;this.angle+=this.spin;if(this.y>H+20||this.x<-20||this.x>W+20)this.reset();}draw(){ctx.save();ctx.translate(this.x,this.y);ctx.rotate(this.angle);ctx.globalAlpha=this.alpha;ctx.fillStyle=this.color;ctx.beginPath();ctx.moveTo(0,-this.size);ctx.bezierCurveTo(this.size,-this.size/2,this.size,this.size/2,0,this.size);ctx.bezierCurveTo(-this.size,this.size/2,-this.size,-this.size/2,0,-this.size);ctx.fill();ctx.restore();}}
+  for(let i=0;i<90;i++)particles.push(new Particle());
+  function drawTrees(){ctx.fillStyle='rgba(2,8,6,0.65)';ctx.beginPath();ctx.moveTo(0,H);let pts=[];for(let x=0;x<=W;x+=80){const h=60+Math.sin(x*0.012)*40+Math.sin(x*0.031)*30;pts.push({x,y:H-h});}ctx.moveTo(0,H);pts.forEach((p,i)=>{if(i===0)ctx.lineTo(p.x,p.y);else ctx.lineTo(p.x,p.y);});ctx.lineTo(W,H);ctx.closePath();ctx.fill();ctx.fillStyle='rgba(2,8,6,0.85)';ctx.beginPath();ctx.moveTo(0,H);for(let x=0;x<=W;x+=60){const h=35+Math.sin(x*0.018+1)*28+Math.sin(x*0.045+2)*18;ctx.lineTo(x,H-h);}ctx.lineTo(W,H);ctx.closePath();ctx.fill();}
+  let raf;
+  function animate(){ctx.clearRect(0,0,W,H);const grd=ctx.createLinearGradient(0,0,0,H);grd.addColorStop(0,'#020806');grd.addColorStop(1,'#0a1a0e');ctx.fillStyle=grd;ctx.fillRect(0,0,W,H);particles.forEach(p=>{p.update();p.draw();});drawTrees();raf=requestAnimationFrame(animate);}
+  animate();window._stopIntroCanvas=()=>{cancelAnimationFrame(raf);};
+})();
+(function(){const c=document.getElementById('introFF');for(let i=0;i<24;i++){const f=document.createElement('div');f.className='ifly';f.style.cssText=`left:${Math.random()*92+4}%;top:${15+Math.random()*65}%;--d:${6+Math.random()*9}s;--dl:${Math.random()*10}s;--tx:${(Math.random()-.5)*120}px;--ty:${-20-Math.random()*80}px;--tx2:${(Math.random()-.5)*140}px;--ty2:${-30-Math.random()*60}px`;c.appendChild(f);}})();
+
+/* ============================================================
+   ENTER SITE
+============================================================ */
+function enterSite(){
+  const intro=document.getElementById('intro');
+  intro.classList.add('hide');
+  if(window._stopIntroCanvas)window._stopIntroCanvas();
+  setTimeout(()=>{intro.style.display='none';},1500);
+  // Set ucapan berdasarkan waktu Jakarta dan mulai musik
+  setTimeout(()=>{
+    setGreetingByTime();
+    playTrack(0);
+  },900);
+}
+
+/* ============================================================
+   CURSOR
+============================================================ */
+const cur=document.getElementById('cursor'),curD=document.getElementById('cursorDot');
+document.addEventListener('mousemove',e=>{if(!cur)return;cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';curD.style.left=e.clientX+'px';curD.style.top=e.clientY+'px';});
+document.querySelectorAll('button,a,.nature-card,.animal-card,.mem-card').forEach(el=>{el.addEventListener('mouseenter',()=>cur&&cur.classList.add('big'));el.addEventListener('mouseleave',()=>cur&&cur.classList.remove('big'));});
+
+/* ============================================================
+   UCAPAN OTOMATIS BERDASARKAN WAKTU JAKARTA
+============================================================ */
+function setGreetingByTime(){
+  // Jakarta time (WIB, UTC+7) - No DST
+  const now = new Date();
+  const jakartaOffset = 7 * 60; // UTC+7 in minutes
+  const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+  const jakartaTime = new Date(utc + (jakartaOffset * 60000));
+  const hour = jakartaTime.getHours();
+  
+  // Tetap mode malam (night theme)
+  document.documentElement.setAttribute('data-theme','night');
+  
+  // Set ucapan berdasarkan jam Jakarta
+  // Pagi: 05:00 - 10:59 | Siang: 11:00 - 14:59 | Sore: 15:00 - 17:59 | Malam: 18:00 - 04:59
+  let greeting = '🌙 Selamat Malam, Richy';
+  if (hour >= 5 && hour < 11) {
+    greeting = '☀️ Selamat Pagi, Richy';
+  } else if (hour >= 11 && hour < 15) {
+    greeting = '☀️ Selamat Siang, Richy';
+  } else if (hour >= 15 && hour < 18) {
+    greeting = '🌅 Selamat Sore, Richy';
+  }
+  document.getElementById('heroBadge').textContent = greeting;
+}
+
+/* ============================================================
+   STARS / FIREFLIES / LEAVES
+============================================================ */
+const sc=document.getElementById('starsC');
+for(let i=0;i<95;i++){const s=document.createElement('div');s.className='star';const z=Math.random()*2.8+0.8;s.style.cssText=`width:${z}px;height:${z}px;left:${Math.random()*100}%;top:${Math.random()*65}%;--dur:${1.5+Math.random()*4}s;--delay:${Math.random()*6}s`;sc.appendChild(s);}
+const fc=document.getElementById('ffC');
+for(let i=0;i<20;i++){const f=document.createElement('div');f.className='firefly';f.style.cssText=`left:${Math.random()*88+6}%;top:${18+Math.random()*52}%;--dur:${6+Math.random()*9}s;--delay:${Math.random()*11}s;--tx:${(Math.random()-.5)*110}px;--ty:${-18-Math.random()*70}px;--tx2:${(Math.random()-.5)*130}px;--ty2:${-28-Math.random()*55}px`;fc.appendChild(f);}
+const lc=document.getElementById('lvC');
+const lclr=['#52b788','#2d6a4f','#95d5b2','#b7e4c7','#e9c46a','#a8dadc','#74c69d'];
+for(let i=0;i<22;i++){const l=document.createElement('div');l.className='leaf-fall';l.style.cssText=`left:${Math.random()*100}%;--sz:${7+Math.random()*11}px;--lc:${lclr[Math.floor(Math.random()*lclr.length)]};--dur:${7+Math.random()*9}s;--delay:${Math.random()*14}s;--drift:${(Math.random()-.5)*200}px`;lc.appendChild(l);}
+
+/* ============================================================
+   SCROLL OBSERVE
+============================================================ */
+const ob=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');});},{threshold:0.12});
+document.querySelectorAll('.obs').forEach(el=>ob.observe(el));
+const secs=document.querySelectorAll('section');
+const nls=document.querySelectorAll('.nav-links a');
+const nob=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){nls.forEach(a=>a.classList.remove('active'));const lk=document.querySelector(`.nav-links a[href="#${x.target.id}"]`);if(lk)lk.classList.add('active');}});},{threshold:0.5});
+secs.forEach(s=>nob.observe(s));
+
+/* ============================================================
+   MOBILE MENU
+============================================================ */
+function toggleMenu(){document.getElementById('mMenu').classList.toggle('open');}
+function closeMenu(){document.getElementById('mMenu').classList.remove('open');}
+document.addEventListener('click',e=>{const m=document.getElementById('mMenu'),h=document.getElementById('ham');if(!m.contains(e.target)&&!h.contains(e.target))m.classList.remove('open');});
+
+/* ============================================================
+   MUSIC PLAYER — Local Audio (Hidden, no UI)
+============================================================ */
+const playlist = [
+  { title: 'Birds of a Feather',      artist: 'Billie Eilish',     src: 'music/birds-of-a-feather.mp3',    emoji: '🐦' },
+  { title: 'The Fate of Ophelia',     artist: 'Taylor Swift',      src: 'music/the-fate-of-ophelia.mp3',   emoji: '🎵' },
+  { title: 'Forest Ambience',         artist: 'Nature Vibes',      src: 'music/forest-ambience.mp3',       emoji: '🌿' },
+  { title: 'Relaxing Nature Sounds',  artist: 'Peaceful Melodies', src: 'music/nature-sounds.mp3',         emoji: '🌊' },
+  { title: 'Midnight Lo-fi',          artist: 'ChilledCow',        src: 'music/midnight-lofi.mp3',         emoji: '🌙' },
+  { title: 'Cozy Jazz & Forest',      artist: 'Ambient Cafe',      src: 'music/cozy-jazz.mp3',             emoji: '☕' },
+  { title: 'Morning Birds & Piano',   artist: 'Nature Piano',      src: 'music/morning-birds.mp3',         emoji: '🐦' },
+  { title: 'Deep Forest',             artist: 'Relaxing World',    src: 'music/deep-forest.mp3',           emoji: '🍃' },
+];
+
+// Create audio element dynamically (hidden)
+const audio = new Audio();
+audio.preload = 'metadata';
+let curTrack = 0, isShuffle = false, isRepeat = false;
+
+// Setup audio events
+audio.addEventListener('timeupdate', updateProgress);
+audio.addEventListener('loadedmetadata', updateDuration);
+audio.addEventListener('ended', onEnded);
+audio.addEventListener('play', ()=>{ updatePlayBtn(true); });
+audio.addEventListener('pause', ()=>{ updatePlayBtn(false); });
+audio.addEventListener('error', ()=>{ console.log('Audio error: File tidak ditemukan'); });
+
+function playTrack(i){
+  curTrack = i;
+  const t = playlist[i];
+  audio.src = t.src;
+  audio.play().catch(()=>{}); // autoplay might be blocked; user interaction needed
+  console.log('Now playing:', t.title, '-', t.artist);
+}
+
+function togglePlay(){
+  if(audio.paused) audio.play().catch(()=>{});
+  else audio.pause();
+}
+
+function prevTrack(){
+  if(audio.currentTime > 3){ audio.currentTime = 0; return; }
+  curTrack = isShuffle
+    ? Math.floor(Math.random() * playlist.length)
+    : (curTrack - 1 + playlist.length) % playlist.length;
+  playTrack(curTrack);
+}
+
+function nextTrack(){
+  curTrack = isShuffle
+    ? Math.floor(Math.random() * playlist.length)
+    : (curTrack + 1) % playlist.length;
+  playTrack(curTrack);
+}
+
+function onEnded(){
+  if(isRepeat){ audio.currentTime = 0; audio.play().catch(()=>{}); }
+  else nextTrack();
+}
+
+function toggleShuffle(){
+  isShuffle = !isShuffle;
+  console.log('Shuffle:', isShuffle ? 'ON' : 'OFF');
+}
+
+function toggleRepeat(){
+  isRepeat = !isRepeat;
+  console.log('Repeat:', isRepeat ? 'ON' : 'OFF');
+}
+
+function updatePlayBtn(playing){
+  console.log('Playing:', playing);
+}
+
+function updateProgress(){
+  // No UI to update
+}
+
+function updateDuration(){
+  // No UI to update
+}
+
+/* ============================================================
+   GAME SWITCH
+============================================================ */
+function switchGame(n,btn){
+  document.querySelectorAll('.game-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.game-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(n+'-panel').classList.add('active');
+  btn.classList.add('active');
+  if(n==='quiz')initQuiz();
+  if(n==='memory')initMemory();
+  if(n==='catch')drawCatch();
+}
+
+/* ============================================================
+   QUIZ
+============================================================ */
+const qData=[
+  {e:'🦊',q:'Apa yang membuat rubah mampu berburu di bawah salju tebal?',o:['Hidung super sensitif','Pendengaran sangat tajam','Penglihatan inframerah','Kumis deteksi getaran'],a:1,f:'Rubah bisa mendengar suara di bawah 1 meter salju! Telinganya mendeteksi frekuensi rendah dari hewan kecil.'},
+  {e:'🌿',q:'Pohon berkomunikasi satu sama lain melalui…',o:['Getaran akar','Sinyal kimia di udara','Jaringan miselium jamur','Semua jawaban benar'],a:3,f:'Pohon berbagi nutrisi dan sinyal peringatan melalui jaringan jamur di tanah, udara, dan kontak akar!'},
+  {e:'🌊',q:'Apa yang menyebabkan warna biru pada lautan dalam?',o:['Refleksi langit','Cahaya menyerap merah, hijau tersisa','Plankton biru','Mineral besi'],a:1,f:'Air menyerap cahaya merah & kuning — hanya biru yang diteruskan, memberi warna khas laut dalam!'},
+  {e:'🦋',q:'Selama metamorfosis, ulat di dalam kepompong…',o:['Tidur dan tumbuh sayap','Hampir seluruh tubuhnya mencair dan dibangun ulang','Berubah warna perlahan','Membangun kerangka baru'],a:1,f:'Benar-benar luar biasa — ulat MENCAIR jadi sup sel, lalu diprogram ulang jadi kupu-kupu!'},
+  {e:'🌳',q:'Pohon tertua yang masih hidup (Methuselah) berumur berapa?',o:['~2.000 tahun','~3.500 tahun','~5.000 tahun','~8.000 tahun'],a:2,f:'Methuselah, pohon Bristlecone Pine di California, berumur sekitar 5.000 tahun!'},
+  {e:'🐱',q:'Mengapa kucing meong hanya kepada manusia, bukan sesama kucing?',o:['Ingin bermain','Adaptasi khusus untuk berkomunikasi dengan manusia','Menandai wilayah','Meniru suara manusia'],a:1,f:'Kucing dewasa tidak meong ke sesama kucing — ini adaptasi unik yang berkembang untuk berkomunikasi dengan manusia!'},
+  {e:'🦜',q:'Burung apa yang paling akurat meniru suara manusia?',o:['Beo Afrika','Kakatua Putih','Burung Myna Hill','Gagak'],a:2,f:'Burung Myna Hill mampu meniru aksen, nada, dan ritme bicara manusia dengan sangat akurat!'},
+  {e:'🌊',q:'Berapa persen oksigen bumi diproduksi lautan?',o:['~20%','~35%','~50%','~70%'],a:2,f:'Sekitar 50% oksigen bumi berasal dari fitoplankton laut — lebih produktif dari semua hutan di darat!'},
+  {e:'🍄',q:'Organisme hidup terbesar di dunia berdasarkan luas adalah…',o:['Paus Biru','Hutan Amazon','Jaringan Miselium Armillaria','Terumbu Karang Besar'],a:2,f:'Jaringan miselium Armillaria di Oregon mencakup 9,6 km² dan berusia sekitar 8.650 tahun!'},
+  {e:'🦋',q:'Kupu-kupu Monarch bermigrasi sejauh apa per tahun?',o:['~500 km','~2.000 km','~4.500 km','~8.000 km'],a:2,f:'Kupu-kupu Monarch bermigrasi hingga 4.500 km dari Kanada ke Meksiko — hanya dengan insting dan posisi matahari!'},
+];
+let qi=0,qs=0,qa=false;
+function initQuiz(){qi=0;qs=0;qa=false;document.getElementById('qContent').style.display='block';document.getElementById('qScore').style.display='none';renderQ();}
+function renderQ(){
+  const d=qData[qi];
+  document.getElementById('qProg').innerHTML=qData.map((_,i)=>`<div class="quiz-progress-dot ${i<qi?'done':i===qi?'current':''}"></div>`).join('');
+  document.getElementById('qEmoji').textContent=d.e;
+  document.getElementById('qQ').textContent=d.q;
+  document.getElementById('qOpts').innerHTML=d.o.map((o,i)=>`<button class="quiz-btn" onclick="ansQ(${i})">${o}</button>`).join('');
+  document.getElementById('qFb').className='quiz-feedback';
+  document.getElementById('qNext').style.display='none';
+  qa=false;
+}
+function ansQ(idx){
+  if(qa)return;qa=true;
+  const d=qData[qi];
+  document.querySelectorAll('.quiz-btn').forEach(b=>b.disabled=true);
+  document.querySelectorAll('.quiz-btn')[d.a].classList.add('correct');
+  const fb=document.getElementById('qFb');
+  if(idx===d.a){qs++;document.querySelectorAll('.quiz-btn')[idx].classList.add('correct');fb.textContent='✅ Benar! '+d.f;fb.className='quiz-feedback correct';}
+  else{document.querySelectorAll('.quiz-btn')[idx].classList.add('wrong');fb.textContent='❌ Salah. '+d.f;fb.className='quiz-feedback wrong';}
+  const nb=document.getElementById('qNext');nb.textContent=qi<qData.length-1?'Pertanyaan Berikutnya →':'Lihat Skor Final 🌿';nb.style.display='block';
+}
+function nextQ(){
+  qi++;
+  if(qi>=qData.length){
+    document.getElementById('qContent').style.display='none';document.getElementById('qScore').style.display='block';
+    document.getElementById('qScoreN').textContent=qs+'/'+qData.length;
+    let msg='';
+    if(qs<=2)msg='Jangan menyerah! Alam masih punya banyak rahasia untukmu. 🌱';
+    else if(qs<=4)msg='Bagus! Kamu mulai mengenal alam dengan baik. 🍃';
+    else if(qs<=6)msg='Keren sekali! Pengetahuanmu tentang alam sudah hebat! 🌿';
+    else msg='Sempurna! Kamu adalah penjaga alam sejati, Richy! 🌳✨';
+    document.getElementById('qScoreM').textContent=msg;
+  }else{renderQ();}
+}
+initQuiz();
+
+/* ============================================================
+   CATCH GAME
+============================================================ */
+const cc=document.getElementById('catchCanvas'),ctx2=cc.getContext('2d');
+let cgOn=false,cgSc=0,cgT=30,cgLv=1,bugs=[],cgI,cgTI,cgMX=0,cgMY=0;
+function cpos(e){const r=cc.getBoundingClientRect(),sx=cc.width/r.width,sy=cc.height/r.height;if(e.touches)return{x:(e.touches[0].clientX-r.left)*sx,y:(e.touches[0].clientY-r.top)*sy};return{x:(e.clientX-r.left)*sx,y:(e.clientY-r.top)*sy};}
+cc.addEventListener('mousemove',e=>{const p=cpos(e);cgMX=p.x;cgMY=p.y;});
+cc.addEventListener('touchmove',e=>{e.preventDefault();const p=cpos(e);cgMX=p.x;cgMY=p.y;},{passive:false});
+function doCatch(e){if(!cgOn)return;const p=cpos(e);bugs.forEach((b,i)=>{const dx=p.x-b.x,dy=p.y-b.y;if(Math.sqrt(dx*dx+dy*dy)<b.r+18){cgSc+=b.pts;document.getElementById('cSc').textContent=cgSc;b.burst=14;setTimeout(()=>{const j=bugs.indexOf(b);if(j>-1)bugs.splice(j,1);},280);}});}
+cc.addEventListener('click',doCatch);cc.addEventListener('touchstart',e=>{e.preventDefault();doCatch(e);},{passive:false});
+const bT=[{e:'🦋',r:22,sp:2.2,pts:10},{e:'🐝',r:16,sp:3.2,pts:20},{e:'🪲',r:14,sp:4,pts:30},{e:'🦗',r:11,sp:5.2,pts:50}];
+function spawnB(){const t=bT[Math.floor(Math.random()*Math.min(cgLv,bT.length))];bugs.push({x:t.r+Math.random()*(cc.width-t.r*2),y:t.r+Math.random()*(cc.height-t.r*2),vx:(Math.random()-.5)*t.sp*2,vy:(Math.random()-.5)*t.sp*2,e:t.e,r:t.r,pts:t.pts,wb:Math.random()*Math.PI*2,burst:0});}
+function drawCatch(){
+  const dk=true; // Always night mode
+  ctx2.fillStyle='#060f09';ctx2.fillRect(0,0,cc.width,cc.height);
+  ctx2.strokeStyle='rgba(82,183,136,0.07)';ctx2.lineWidth=1;
+  for(let x=0;x<cc.width;x+=50){ctx2.beginPath();ctx2.moveTo(x,0);ctx2.lineTo(x,cc.height);ctx2.stroke();}
+  for(let y=0;y<cc.height;y+=50){ctx2.beginPath();ctx2.moveTo(0,y);ctx2.lineTo(cc.width,y);ctx2.stroke();}
+  ctx2.strokeStyle='rgba(149,213,178,0.5)';ctx2.lineWidth=1;
+  ctx2.beginPath();ctx2.moveTo(cgMX-22,cgMY);ctx2.lineTo(cgMX+22,cgMY);ctx2.stroke();
+  ctx2.beginPath();ctx2.moveTo(cgMX,cgMY-22);ctx2.lineTo(cgMX,cgMY+22);ctx2.stroke();
+  ctx2.beginPath();ctx2.arc(cgMX,cgMY,32,0,Math.PI*2);ctx2.stroke();
+  bugs.forEach(b=>{
+    b.wb+=0.09;b.x+=b.vx+Math.sin(b.wb)*0.6;b.y+=b.vy+Math.cos(b.wb*0.7)*0.6;
+    if(b.x<b.r||b.x>cc.width-b.r)b.vx*=-1;if(b.y<b.r||b.y>cc.height-b.r)b.vy*=-1;
+    b.x=Math.max(b.r,Math.min(cc.width-b.r,b.x));b.y=Math.max(b.r,Math.min(cc.height-b.r,b.y));
+    if(!b.burst){const g=ctx2.createRadialGradient(b.x,b.y,0,b.x,b.y,b.r*2.2);g.addColorStop(0,'rgba(255,255,255,0.12)');g.addColorStop(1,'transparent');ctx2.fillStyle=g;ctx2.beginPath();ctx2.arc(b.x,b.y,b.r*2.2,0,Math.PI*2);ctx2.fill();}
+    ctx2.font=`${b.r*1.85}px serif`;ctx2.textAlign='center';ctx2.textBaseline='middle';
+    if(b.burst>0){ctx2.globalAlpha=b.burst/14;ctx2.font=`${b.r*1.85*(1+(14-b.burst)/14)}px serif`;b.burst--;}
+    ctx2.fillText(b.e,b.x,b.y);ctx2.globalAlpha=1;
+    ctx2.fillStyle='rgba(149,213,178,0.6)';ctx2.font='bold 11px Nunito';ctx2.fillText('+'+b.pts,b.x,b.y-b.r-7);
+  });
+  if(!cgOn){
+    ctx2.fillStyle='rgba(6,15,9,0.75)';ctx2.fillRect(0,0,cc.width,cc.height);
+    ctx2.fillStyle='#95d5b2';ctx2.font=`bold ${Math.min(22,cc.width/22)}px Playfair Display`;ctx2.textAlign='center';
+    ctx2.fillText('Klik tombol untuk mulai!',cc.width/2,cc.height/2);
+  }
+}
+function startCatch(){
+  cgSc=0;cgT=30;cgLv=1;bugs=[];cgOn=true;
+  document.getElementById('cSc').textContent=0;document.getElementById('cTm').textContent=30;document.getElementById('cLv').textContent=1;
+  document.getElementById('cBtn').style.display='none';
+  for(let i=0;i<4;i++)spawnB();
+  cgI=setInterval(()=>{if(bugs.length<5+cgLv)spawnB();drawCatch();},50);
+  cgTI=setInterval(()=>{
+    cgT--;document.getElementById('cTm').textContent=cgT;
+    if(cgT%10===0&&cgT>0){cgLv++;document.getElementById('cLv').textContent=cgLv;}
+    if(cgT<=0){
+      clearInterval(cgI);clearInterval(cgTI);cgOn=false;bugs=[];
+      ctx2.fillStyle='rgba(6,15,9,0.88)';ctx2.fillRect(0,0,cc.width,cc.height);
+      ctx2.fillStyle='#95d5b2';ctx2.font=`bold ${Math.min(24,cc.width/20)}px Playfair Display`;ctx2.textAlign='center';
+      ctx2.fillText('Selesai! Skor: '+cgSc,cc.width/2,cc.height/2-18);
+      ctx2.font='16px Nunito';ctx2.fillStyle='rgba(149,213,178,0.8)';
+      ctx2.fillText('Level tertinggi: '+cgLv,cc.width/2,cc.height/2+18);
+      document.getElementById('cBtn').textContent='🦋 Main Lagi!';document.getElementById('cBtn').style.display='block';
+    }
+  },1000);
+}
+function resCC(){const w=cc.parentElement.clientWidth;const mw=Math.min(w-26,700);cc.style.width=mw+'px';cc.style.height=Math.round(mw*360/700)+'px';}
+resCC();window.addEventListener('resize',resCC);
+drawCatch();
+
+/* ============================================================
+   MEMORY GAME
+============================================================ */
+const mE=['🦊','🐱','🦜','🌳','🦋','🌸','🍄','⭐'];
+let mFl=[],mMv2=0,mMt2=0,mTm2=0,mTI,mLk=false;
+function initMemory(){
+  clearInterval(mTI);mFl=[];mMv2=0;mMt2=0;mTm2=0;mLk=false;
+  document.getElementById('mMv').textContent=0;document.getElementById('mMt').textContent='0/8';document.getElementById('mTm').textContent=0;
+  const cards=[...mE,...mE].sort(()=>Math.random()-.5);
+  document.getElementById('mGrid').innerHTML=cards.map((e,i)=>`<div class="mem-card" onclick="flipC(this,'${e}',${i})"><div class="mem-card-front">🌿</div><div class="mem-card-back">${e}</div></div>`).join('');
+  mTI=setInterval(()=>{mTm2++;document.getElementById('mTm').textContent=mTm2;},1000);
+}
+function flipC(el,e,i){
+  if(mLk||el.classList.contains('flipped')||el.classList.contains('matched'))return;
+  el.classList.add('flipped');mFl.push({el,e});
+  if(mFl.length===2){
+    mLk=true;mMv2++;document.getElementById('mMv').textContent=mMv2;
+    const[a,b]=mFl;
+    if(a.e===b.e){a.el.classList.add('matched');b.el.classList.add('matched');mMt2++;document.getElementById('mMt').textContent=mMt2+'/8';mFl=[];mLk=false;if(mMt2===8){clearInterval(mTI);setTimeout(()=>alert(`🎉 Selesai!\\n⏱ Waktu: ${mTm2}s\\n👣 Langkah: ${mMv2}\\n\\nHebat sekali, Richy! 🌿`),300);}}
+    else{setTimeout(()=>{a.el.classList.remove('flipped');b.el.classList.remove('flipped');mFl=[];mLk=false;},900);}
+  }
+}
+initMemory();
+</script>
+</body>
+</html>
