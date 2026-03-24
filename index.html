@@ -925,13 +925,12 @@ document.addEventListener('click',e=>{const m=document.getElementById('mMenu'),h
 ============================================================ */
 const playlist = [
   { title: 'Birds of a Feather',      artist: 'Billie Eilish',     src: 'music/birds.mp3',    emoji: '🐦' },
-  { title: 'The Fate of Ophelia',     artist: 'Taylor Swift',      src: 'music/ophelia.m4a',   emoji: '🎵' },
 ];
 
 // Create audio element dynamically (hidden)
 const audio = new Audio();
 audio.preload = 'metadata';
-let curTrack = 0, isShuffle = false, isRepeat = false;
+let curTrack = 0, isShuffle = false, isRepeat = true;
 
 // Setup audio events
 audio.addEventListener('timeupdate', updateProgress);
