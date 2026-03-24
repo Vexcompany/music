@@ -881,13 +881,13 @@ function setGreetingByTime(){
   
   // Set ucapan berdasarkan jam Jakarta
   // Pagi: 05:00 - 10:59 | Siang: 11:00 - 14:59 | Sore: 15:00 - 17:59 | Malam: 18:00 - 04:59
-  let greeting = '🌙 Selamat Malam, Richy';
+  let greeting = '🌙 Selamat Malam, Richyyy';
   if (hour >= 5 && hour < 11) {
-    greeting = '☀️ Selamat Pagi, Richy';
+    greeting = '☀️ Selamat Pagi, Richyyy';
   } else if (hour >= 11 && hour < 15) {
-    greeting = '☀️ Selamat Siang, Richy';
+    greeting = '☀️ Selamat Siang, Richyyy';
   } else if (hour >= 15 && hour < 18) {
-    greeting = '🌅 Selamat Sore, Richy';
+    greeting = '🌅 Selamat Sore, Richyyy';
   }
   document.getElementById('heroBadge').textContent = greeting;
 }
@@ -924,14 +924,8 @@ document.addEventListener('click',e=>{const m=document.getElementById('mMenu'),h
    MUSIC PLAYER — Local Audio (Hidden, no UI)
 ============================================================ */
 const playlist = [
-  { title: 'Birds of a Feather',      artist: 'Billie Eilish',     src: 'music/birds-of-a-feather.mp3',    emoji: '🐦' },
-  { title: 'The Fate of Ophelia',     artist: 'Taylor Swift',      src: 'music/the-fate-of-ophelia.mp3',   emoji: '🎵' },
-  { title: 'Forest Ambience',         artist: 'Nature Vibes',      src: 'music/forest-ambience.mp3',       emoji: '🌿' },
-  { title: 'Relaxing Nature Sounds',  artist: 'Peaceful Melodies', src: 'music/nature-sounds.mp3',         emoji: '🌊' },
-  { title: 'Midnight Lo-fi',          artist: 'ChilledCow',        src: 'music/midnight-lofi.mp3',         emoji: '🌙' },
-  { title: 'Cozy Jazz & Forest',      artist: 'Ambient Cafe',      src: 'music/cozy-jazz.mp3',             emoji: '☕' },
-  { title: 'Morning Birds & Piano',   artist: 'Nature Piano',      src: 'music/morning-birds.mp3',         emoji: '🐦' },
-  { title: 'Deep Forest',             artist: 'Relaxing World',    src: 'music/deep-forest.mp3',           emoji: '🍃' },
+  { title: 'Birds of a Feather',      artist: 'Billie Eilish',     src: 'music/birds.mp3',    emoji: '🐦' },
+  { title: 'The Fate of Ophelia',     artist: 'Taylor Swift',      src: 'music/ophelia.mp3',   emoji: '🎵' },
 ];
 
 // Create audio element dynamically (hidden)
